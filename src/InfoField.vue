@@ -109,10 +109,10 @@
   @padding: 0.3em;
 
   #fontSizes() {
-    small: 0.7em;
-    medium: 0.8em;
-    large: 1em;
-    details: 0.7em;
+    small: 0.8em;
+    medium: 0.9em;
+    large: 1.2em;
+    details: 0.8em;
   }
 
   h2.name {
@@ -241,7 +241,7 @@
 
     &.large {
       margin-top: @padding;
-      height: (3* @padding) + #fontSizes[large] + (#fontSizes[details] * 2);
+      /*height: (3* @padding) + #fontSizes[large] + (#fontSizes[details] * 2);*/
       padding-bottom: @padding;
     }
 

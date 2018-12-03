@@ -8,9 +8,9 @@
       <Avatar v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></Avatar>
       <InfoField v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></InfoField>
     </a>
-    <div v-if="type !== 'small'" class="roles" :class="rolesExist() ? 'exists' : 'empty'">
+    <span v-if="type !== 'small'" class="roles" :class="rolesExist() ? 'exists' : 'empty'">
       {{ getRoles().map((role) => $vcaI18n.t('value.roles.' + role.role)).join(", ") }}
-    </div>
+    </span>
   </div>
 </template>
 
@@ -86,23 +86,26 @@
   @import "./assets/responsive.less";
 
   #sizes() {
-    small: 5em;
-    medium: 14em;
+    small: 6em;
+    medium: 15em;
     large: 10em;
   }
 
   #heights() {
-    small: 2em;
+    small: 2.5em;
   }
 
   .user-role-wrapper {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    .card {
+      line-height: 1em;
+    }
+
     .roles {
-      height: 1.2em;
       line-height: 1.2em;
-      font-size: 0.7em;
+      font-size: 0.9em;
       text-align: center;
 
       &.exists {

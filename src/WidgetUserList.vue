@@ -156,6 +156,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    line-height: 1em;
 
     &.error {
       align-items: center;
