@@ -119,6 +119,10 @@
         .button();
       }
     }
+    & /deep/ a {
+      text-decoration: none;
+      color: #colors[primary];
+    }
   }
 
   .card {

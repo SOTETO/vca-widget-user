@@ -170,6 +170,11 @@
         line-height: 2em;
       }
     }
+
+    & /deep/ a {
+      text-decoration: none;
+      color: #colors[primary];
+    }
   }
 
   .paginate {
