@@ -1,4 +1,5 @@
 <template>
+  <div class="users-table-wrapper">
     <table class="users-table">
       <thead>
         <TableRow type="header" />
@@ -7,6 +8,7 @@
         <TableRow v-for="(user, i) of users" type="row" :className="(i % 2 == 0) ? 'even' : 'odd'" :user="user" :key="user.id" />
       </tbody>
     </table>
+  </div>
 </template>
 
 <script>
@@ -27,5 +29,6 @@
     border-spacing: 0.5rem;
     border-collapse: collapse;
     overflow-y: auto;
+    width: 100%;
   }
 </style>
