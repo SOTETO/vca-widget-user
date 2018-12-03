@@ -24,7 +24,7 @@ export default class FilterQuery {
   }
 
   getFields () {
-    return this.fieldLists.map(l => l.getFields()).flat(1)
+    return this.fieldLists.reduce((acc, l) => acc.concat(l.getFields()), [])
   }
 
   removeField (field) {
