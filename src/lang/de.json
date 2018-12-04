@@ -9,7 +9,8 @@
     "gender": {
       "male": "Mann",
       "female": "Frau",
-      "notDefined": "Nicht angegeben"
+      "other": "Divers",
+      "undefined": "Nicht angegeben"
     },
     "roles": {
       "admin": "Admin",
