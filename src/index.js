@@ -1,5 +1,6 @@
 import WidgetUser from './WidgetUser.vue'
 import WidgetUserList from './WidgetUserList.vue'
+import VcARole from './VcARole.vue'
 import VueI18n from 'vue-i18n'
 import en from './lang/en.json'
 import de from './lang/de.json'
@@ -28,6 +29,11 @@ function getLang(Vue, options) {
   return Vue
 }
 
+VcARole.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.component('vca-role', VcARole)
+}
+
 WidgetUser.install = function (Vue, options) {
   Vue = getLang(Vue, options)
 
@@ -46,12 +52,14 @@ WidgetUser.install = function (Vue, options) {
 
 WidgetUserList.install = function (Vue, options) {
   Vue = getLang(Vue, options)
+  Vue.use(VcARole, options)
   Vue.use(WidgetUser, options)
   Vue.component('widget-user-list', WidgetUserList)
 }
 
 // Install by default if using the script tag
 if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(VcARole)
   window.Vue.use(WidgetUser)
   window.Vue.use(WidgetUserList)
 }
@@ -60,6 +68,7 @@ export default WidgetUserList
 const version = '__VERSION__'
 // Export all components too
 export {
+  VcARole,
   WidgetUser,
   WidgetUserList,
   version

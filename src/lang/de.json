@@ -14,7 +14,8 @@
     },
     "roles": {
       "admin": "Admin",
-      "employee": "Hauptamt"
+      "employee": "Hauptamt",
+      "supporter": "Supporter"
     }
   },
   "label": {

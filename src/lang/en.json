@@ -14,7 +14,8 @@
     },
     "roles": {
       "admin": "Admin",
-      "employee": "Employee"
+      "employee": "Employee",
+      "supporter": "Supporter"
     }
   },
   "label": {

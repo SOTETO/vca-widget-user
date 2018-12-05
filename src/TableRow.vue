@@ -14,10 +14,10 @@
       <Avatar v-bind:error-code="errorState" v-bind:user="user" type="medium"></Avatar>
     </td>
     <td class="name">
-      <a :href="getURL()" ref="profileLink">{{ user.profiles[0].supporter.fullName }}</a><br />
-      <span v-for="role in user.roles.filter((r) => r.role !== 'supporter')" class="role">
-        {{ $vcaI18n.t('value.roles.' + role.role) }}
-      </span>
+      <a :href="getURL()" ref="profileLink">{{ user.profiles[0].supporter.fullName }}</a>
+      <div class="roles">
+        <VcARole v-for="role in user.roles.filter((r) => r.role !== 'supporter')" :name="role.role" :key="role.role" />
+      </div>
     </td>
     <td class="since">{{ getSince() }}</td>
     <td class="crew">
@@ -33,11 +33,14 @@
 
 <script>
     import Avatar from './Avatar'
+    import VcARole from './VcARole'
+
     export default {
       name: 'TableRow',
       props: ['className', 'type', 'user', 'errorState'],
       components: {
-        'Avatar': Avatar
+        'Avatar': Avatar,
+        'VcARole': VcARole
       },
       methods: {
         getClass: function () {
@@ -117,13 +120,23 @@
     }
   }
 
-  .role {
-    .colorProfileThirdly();
-    padding: @padding;
-    font-size: 0.7em;
-    border-radius: 0.5em;
-    margin: 0.2em;
+  .roles {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    & /deep/ .role:not(:first-child) {
+      margin-left: 0.2em;
+    }
   }
+
+  /*<!--.role {-->*/
+    /*<!--.colorProfileThirdly();-->*/
+    /*<!--padding: @padding;-->*/
+    /*<!--font-size: 0.7em;-->*/
+    /*<!--border-radius: 0.5em;-->*/
+    /*<!--margin: 0.2em;-->*/
+  /*<!--}-->*/
 
   .image {
     width: 4em;
