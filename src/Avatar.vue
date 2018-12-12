@@ -6,30 +6,53 @@
   <div v-else-if="error() && show()" :class="type" class="wrapper error">
     <div v-html="require('./images/exclamation_mark.svg')"/>
   </div>
-  <div v-else-if="!exists() && show()" :class="type" class="wrapper">
+  <div v-else-if="!has && show()" :class="type" class="wrapper">
     <div v-html="require('./images/default.svg')"/>
   </div>
   <div v-else-if="show()" class="wrapper">
-    <img :src="user.profiles[0].avatar[0]" :class="type" :alt="user.profiles[0].supporter.fullName" />
+    <img :src="getURL()" :class="type" :alt="user.profiles[0].supporter.fullName" />
   </div>
   <div v-else class="wrapper"></div>
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
       name: 'Avatar',
       props: ['user', 'type', 'errorCode'],
+      data () {
+        return {
+          has: false
+        }
+      },
+      created () {
+        this.exists()
+      },
       methods: {
         exists: function () {
-          return this.user !== null && typeof user !== 'undefined' && this.user.hasOwnProperty('profiles') &&
-            this.user.profiles[0].hasOwnProperty('avatar') && this.user.profiles[0].avatar !== null &&
-            this.user.profiles[0].avatar.length !== 0
+          axios.get('/drops/webapp/avatar/has/me/' + this.user.id + '/' + 200 + '/' + 200)
+            .then((response) => {
+              if(response.status === 200) {
+                this.has = true
+              }
+            })
+            .catch(err => {
+              switch(err.response.status) {
+                case 404:
+                  this.has = false
+                  break;
+              }
+            })
         },
         error: function () {
           return this.errorCode !== null && (typeof this.errorCode !== 'undefined')
         },
         show: function () {
           return this.type !== 'small'
+        },
+        getURL: function () {
+          console.log(this.user)
+          return '/drops/webapp/avatar/get/me/' + this.user.id + '/' + 200 + '/' + 200
         }
       }
     }
@@ -92,8 +115,23 @@
     height: #sizes[small] - 1;
   }
 
+  img.small {
+    width: #sizes[small];
+    height: #sizes[small];
+  }
+
+  img.medium {
+    width: #sizes[medium];
+    height: #sizes[medium];
+  }
+
   .large /deep/ svg {
     height: #sizes[large] - 1;
+  }
+
+  img.large {
+    width: #sizes[large];
+    height: #sizes[large];
   }
 
   .medium.error /deep/ svg {
