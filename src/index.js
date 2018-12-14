@@ -1,6 +1,7 @@
 import WidgetUser from './WidgetUser.vue'
 import WidgetUserList from './WidgetUserList.vue'
 import VcARole from './VcARole.vue'
+import Avatar from './Avatar.vue'
 import VueI18n from 'vue-i18n'
 import en from './lang/en.json'
 import de from './lang/de.json'
@@ -34,8 +35,14 @@ VcARole.install = function (Vue, options) {
   Vue.component('vca-role', VcARole)
 }
 
+Avatar.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.component('avatar', Avatar)
+}
+
 WidgetUser.install = function (Vue, options) {
   Vue = getLang(Vue, options)
+  Vue.use(Avatar, options)
 
   if (options != null && typeof options === 'object' && options.hasOwnProperty('uuid')) {
     Vue.prototype.$widgetUserDefaultUUID = options.uuid
@@ -54,11 +61,13 @@ WidgetUserList.install = function (Vue, options) {
   Vue = getLang(Vue, options)
   Vue.use(VcARole, options)
   Vue.use(WidgetUser, options)
+  Vue.use(Avatar, options)
   Vue.component('widget-user-list', WidgetUserList)
 }
 
 // Install by default if using the script tag
 if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(Avatar)
   window.Vue.use(VcARole)
   window.Vue.use(WidgetUser)
   window.Vue.use(WidgetUserList)
@@ -68,6 +77,7 @@ export default WidgetUserList
 const version = '__VERSION__'
 // Export all components too
 export {
+  Avatar,
   VcARole,
   WidgetUser,
   WidgetUserList,
