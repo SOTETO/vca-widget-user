@@ -63,7 +63,7 @@
           return created.getUTCFullYear()
         },
         getURL: function () {
-          return '/arise/#/profile/' + this.user.id
+          return '/arise/#/user/' + this.user.id
         },
         callLink: function () {
           this.$refs.profileLink.click()

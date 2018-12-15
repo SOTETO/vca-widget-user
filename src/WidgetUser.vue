@@ -67,7 +67,7 @@
       getURL: function () {
         var result = ''
         if (!this.empty()) {
-          result = '/arise/#/profile/' + this.userData.id
+          result = '/arise/#/user/' + this.userData.id
         }
         return result
       },
