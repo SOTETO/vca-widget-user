@@ -1,13 +1,24 @@
 <template>
     <span class="role">
-        {{ $vcaI18n.t('value.roles.' + name) }}
+        {{ getTitle() }}
     </span>
 </template>
 
 <script>
     export default {
-        name: "VcARole",
-        props: ['name']
+      name: "VcARole",
+      props: ['name', 'translated'],
+      methods: {
+          getTitle() {
+            var title = ""
+            if(typeof this.translated !== "undefined" && this.translated !== null && this.translated !== "") {
+              title = this.translated
+            } else {
+              title = this.$vcaI18n.t('value.roles.' + this.name)
+            }
+            return title
+          }
+      }
     }
 </script>
 

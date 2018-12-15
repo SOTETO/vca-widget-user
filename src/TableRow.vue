@@ -21,8 +21,10 @@
     </td>
     <td class="since">{{ getSince() }}</td>
     <td class="crew">
-      {{ hasCrew() ? user.profiles[0].supporter.crew.name : $vcaI18n.t('fallback.noCrew') }}<br />
-      <span class="role" v-if="hasCrewRole()">{{ $vcaI18n.t('label.asp') }}</span>
+      {{ hasCrew() ? user.profiles[0].supporter.crew.name : $vcaI18n.t('fallback.noCrew') }}
+      <div class="roles">
+        <VcARole  v-if="hasCrewRole()" role="VolunteerManager" :translated="$vcaI18n.t('label.asp')" />
+      </div>
     </td>
     <td class="email noPhone">{{ user.profiles[0].email }}</td>
     <td class="mobilePhone noPhone">{{ user.profiles[0].supporter.mobilePhone }}</td>
