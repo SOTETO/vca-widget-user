@@ -22,7 +22,12 @@
     "separator": ": ",
     "age": "Age",
     "since": "Since",
-    "asp": "Manager",
+    "asp": {
+      "finance": "Manager Finances",
+      "operation": "Manager Operations",
+      "network": "Manager Network",
+      "education": "Manager Education"
+    },
     "aspOfCrew": "Manager {crewName}",
     "sorting": {
       "dirButton" : {

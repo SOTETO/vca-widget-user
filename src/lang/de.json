@@ -22,7 +22,12 @@
     "separator": ": ",
     "age": "Alter",
     "since": "Dabei seit",
-    "asp": "ASP",
+    "asp": {
+      "finance": "ASP Finanzen",
+      "operation": "ASP Aktionen",
+      "network": "ASP Netzwerk",
+      "education": "ASP Bildung"
+    },
     "aspOfCrew": "ASP {crewName}",
     "sorting": {
       "dirButton" : {

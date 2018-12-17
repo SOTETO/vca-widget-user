@@ -23,7 +23,12 @@
     <td class="crew">
       {{ hasCrew() ? user.profiles[0].supporter.crew.name : $vcaI18n.t('fallback.noCrew') }}
       <div class="roles">
-        <VcARole  v-if="hasCrewRole()" role="VolunteerManager" :translated="$vcaI18n.t('label.asp')" />
+        <VcARole
+          v-for="role in getCrewRoles()"
+          :role="role.name"
+          :pillar="role.pillar.pillar"
+          :key="role.name + '.' + role.crew.name + '.' + role.pillar.pillar"
+        />
       </div>
     </td>
     <td class="email noPhone">{{ user.profiles[0].email }}</td>
@@ -68,25 +73,26 @@
         callLink: function () {
           this.$refs.profileLink.click()
         },
-        getCrewRole: function () {
+        getCrewRoles: function () {
           var crew = this.user.profiles[0].supporter.crew
           var res = null
           if((typeof crew !== "undefined") && crew !== null && crew.hasOwnProperty("name")) {
-            var role = this.user.profiles[0].supporter.roles.find(function (role) {
+            var roles = this.user.profiles[0].supporter.roles.filter(function (role) {
               var result = false
               if (role.hasOwnProperty("crew")) {
                 result = role.crew.name === crew.name
               }
               return result
             })
-            if (typeof role !== "undefined" && role !== null) {
-              res = role
+            if (typeof roles !== "undefined" && roles !== null) {
+              res = roles
             }
           }
+          console.log(res)
           return res
         },
         hasCrewRole: function () {
-          return this.getCrewRole() !== null
+          return this.getCrewRoles() !== null
         }
       }
     }

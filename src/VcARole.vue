@@ -7,12 +7,14 @@
 <script>
     export default {
       name: "VcARole",
-      props: ['name', 'translated'],
+      props: ['name', 'pillar', 'translated'],
       methods: {
           getTitle() {
             var title = ""
             if(typeof this.translated !== "undefined" && this.translated !== null && this.translated !== "") {
               title = this.translated
+            } else if(typeof this.pillar !== "undefined" && this.pillar !== null && this.pillar !== "") {
+              title = this.$vcaI18n.t('label.asp.' + this.pillar)
             } else {
               title = this.$vcaI18n.t('value.roles.' + this.name)
             }
