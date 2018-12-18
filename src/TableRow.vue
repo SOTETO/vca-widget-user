@@ -88,7 +88,6 @@
               res = roles
             }
           }
-          console.log(res)
           return res
         },
         hasCrewRole: function () {
