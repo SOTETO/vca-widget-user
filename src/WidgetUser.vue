@@ -113,6 +113,11 @@
         color: #colors[secundary];
       }
     }
+    &.medium {
+      @media @phone-down {
+        width: 100%;
+      }
+    }
     &.medium.roles, &.large.roles {
       .button();
     }
@@ -162,10 +167,6 @@
       text-align: center;
       flex-direction: column;
       width: #sizes[large];
-
-      @media @phone-down {
-        width: 45%;
-      }
     }
   }
 </style>
