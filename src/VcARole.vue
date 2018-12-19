@@ -35,6 +35,7 @@
     font-size: 0.9em;
     border-radius: 0.5em;
     margin: 0.2em;
+    display: inline-block;
   }
 
 </style>
