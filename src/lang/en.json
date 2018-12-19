@@ -16,6 +16,9 @@
       "admin": "Admin",
       "employee": "Employee",
       "supporter": "Supporter"
+    },
+    "age": {
+      "notAvailable": "n/a"
     }
   },
   "label": {

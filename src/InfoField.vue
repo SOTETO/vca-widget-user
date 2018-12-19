@@ -61,10 +61,23 @@
         return this.errorCode !== null
       },
       getAge: function () {
-        var birthday = new Date(this.user.profiles[0].supporter.birthday)
-        var ageDifMs = Date.now() - birthday.getTime()
-        var ageDate = new Date(ageDifMs) // miliseconds from epoch
-        return Math.abs(ageDate.getUTCFullYear() - 1970)
+        var age = this.calcAge()
+        var res = this.$vcaI18n.t('value.age.notAvailable')
+        if(age >= 0) {
+          res = age
+        }
+        return res;
+      },
+      calcAge: function () {
+        var birthday = this.user.profiles[0].supporter.birthday
+        var res = -1
+        if(typeof birthday !== "undefined" && birthday !== null) {
+          var birthday = new Date(this.user.profiles[0].supporter.birthday)
+          var ageDifMs = Date.now() - birthday.getTime()
+          var ageDate = new Date(ageDifMs) // miliseconds from epoch
+          res = Math.abs(ageDate.getUTCFullYear() - 1970)
+        }
+        return res
       },
       getSince: function () {
         var created = new Date(this.user.created)

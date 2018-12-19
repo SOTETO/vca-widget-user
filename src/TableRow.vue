@@ -34,7 +34,7 @@
     <td class="email noPhone">{{ user.profiles[0].email }}</td>
     <td class="mobilePhone noPhone">{{ user.profiles[0].supporter.mobilePhone }}</td>
     <td class="age noPhone noTablet">{{ getAge() }}</td>
-    <td class="gender noPhone noTablet">{{ $vcaI18n.t('value.gender.' + user.profiles[0].supporter.sex) }}</td>
+    <td class="gender noPhone noTablet">{{ getGender() }}</td>
   </tr>
 </template>
 
@@ -57,11 +57,32 @@
           return this.user != null && typeof this.user !== 'undefined' &&
             this.user.profiles[0].supporter.hasOwnProperty('crew')
         },
+        getGender: function() {
+          var gender = this.user.profiles[0].supporter.sex
+          var res = this.$vcaI18n.t('value.gender.undefined')
+          if(typeof gender !== "undefined" && gender !== null && gender !== "") {
+            res = this.$vcaI18n.t('value.gender.' + gender)
+          }
+          return res
+        },
         getAge: function () {
-          var birthday = new Date(this.user.profiles[0].supporter.birthday)
-          var ageDifMs = Date.now() - birthday.getTime()
-          var ageDate = new Date(ageDifMs) // miliseconds from epoch
-          return Math.abs(ageDate.getUTCFullYear() - 1970)
+          var age = this.calcAge()
+          var res = this.$vcaI18n.t('value.age.notAvailable')
+          if(age >= 0) {
+            res = age
+          }
+          return res;
+        },
+        calcAge: function () {
+          var birthday = this.user.profiles[0].supporter.birthday
+          var res = -1
+          if(typeof birthday !== "undefined" && birthday !== null) {
+            var birthday = new Date(this.user.profiles[0].supporter.birthday)
+            var ageDifMs = Date.now() - birthday.getTime()
+            var ageDate = new Date(ageDifMs) // miliseconds from epoch
+            res = Math.abs(ageDate.getUTCFullYear() - 1970)
+          }
+          return res
         },
         getSince: function () {
           var created = new Date(this.user.created)
