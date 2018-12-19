@@ -19,8 +19,8 @@
         <div v-if="type !== 'small'" class="contact">
           <!--<span v-if="user.profiles[0].hasOwnProperty('email')" class="typcn typcn-mail"></span>-->
           <!--<span v-if="user.profiles[0].supporter.hasOwnProperty('mobilePhone') && user.profiles[0].supporter.mobilePhone !== null" class="typcn typcn-phone"></span>-->
-          <div v-if="user.profiles[0].hasOwnProperty('email')" v-html="require('./images/mail.svg')" v-tooltip="user.profiles[0].email"/>
-          <div v-if="user.profiles[0].supporter.hasOwnProperty('mobilePhone') && user.profiles[0].supporter.mobilePhone !== null" v-html="require('./images/phone.svg')" v-tooltip="user.profiles[0].supporter.mobilePhone" />
+          <div v-if="user.profiles[0].hasOwnProperty('email')" v-html="require('./images/mail.svg')" />
+          <div v-if="user.profiles[0].supporter.hasOwnProperty('mobilePhone') && user.profiles[0].supporter.mobilePhone !== null" v-html="require('./images/phone.svg')" />
         </div>
       </div>
       <div class="vca details-column">
@@ -38,11 +38,6 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import VTooltip from 'v-tooltip'
-
-  Vue.use(VTooltip)
-
   export default {
     name: 'InfoField',
     props: ['type', 'user', 'errorCode'],
