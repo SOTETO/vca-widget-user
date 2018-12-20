@@ -78,7 +78,7 @@
           var res = -1
           if(typeof birthday !== "undefined" && birthday !== null) {
             var today = new Date()
-            var birthDate = new Date(this.getProfile().supporter.birthday)
+            var birthDate = new Date(birthday)
             var age = today.getFullYear() - birthDate.getFullYear()
             var m = today.getMonth() - birthDate.getMonth()
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
