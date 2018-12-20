@@ -77,10 +77,14 @@
           var birthday = this.user.profiles[0].supporter.birthday
           var res = -1
           if(typeof birthday !== "undefined" && birthday !== null) {
-            var birthday = new Date(this.user.profiles[0].supporter.birthday)
-            var ageDifMs = Date.now() - birthday.getTime()
-            var ageDate = new Date(ageDifMs) // miliseconds from epoch
-            res = Math.abs(ageDate.getUTCFullYear() - 1970)
+            var today = new Date()
+            var birthDate = new Date(this.getProfile().supporter.birthday)
+            var age = today.getFullYear() - birthDate.getFullYear()
+            var m = today.getMonth() - birthDate.getMonth()
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+              age = age - 1
+            }
+            res = age
           }
           return res
         },
