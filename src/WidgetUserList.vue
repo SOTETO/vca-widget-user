@@ -36,7 +36,7 @@
   import ListMenu from './ListMenu'
   import TableUsers from './TableUsers'
   import WidgetUsers from './WidgetUsers'
-  import SearchField from './SearchField'
+  import SearchField from './SearchField/SearchField'
 
   export default {
     name: 'WidgetUserList',
