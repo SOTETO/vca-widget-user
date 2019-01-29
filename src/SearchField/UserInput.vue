@@ -2,7 +2,7 @@
   <div class="search">
     <input v-bind:value="keyword" :placeholder="$vcaI18n.t('label.placeholder.search')"
            v-on:input="input" v-on:keyup.enter.prevent="clear" v-on:keyup.space.prevent="clear" />
-    <button @click="clear" :title="$vcaI18n.t('label.search.button.and')">
+    <button v-if="complexQueries" @click="clear" :title="$vcaI18n.t('label.search.button.and')">
       <div v-html="require('../images/plus.svg')" />
     </button>
   </div>
@@ -10,9 +10,19 @@
 
 <script>
   import FilterQuery from '../utils/FilterQuery'
+  import WidgetUsers from '../WidgetUsers'
 
     export default {
       name: "UserInput",
+      components: {
+        "WidgetUsers": WidgetUsers
+      },
+      props: {
+        "complexQueries": {
+          "type": Boolean,
+          "default": true
+        }
+      },
       data () {
           return {
             "keyword": ""
@@ -30,8 +40,10 @@
           }
         },
         clear () {
-          this.keyword = ""
-          this.$emit("commitFilter")
+          if(this.complexQueries) {
+            this.keyword = ""
+            this.$emit("commitFilter")
+          }
         }
       }
     }
