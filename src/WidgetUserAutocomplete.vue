@@ -5,14 +5,21 @@
     <span v-else>{{ $vcaI18n.t('error.unknown') }}</span>
   </div>
   <div v-else class="user-widget-autocomplete">
-    <Autocomplete v-on:newQuery="setQuery" :selected="selected" @vca-user-remove="remove" />
-    <div v-if="hasUser" class="user-widget-options visible">
+    <Autocomplete
+      v-on:newQuery="setQuery"
+      :selected="selected"
+      :focused="focused"
+      @vca-user-remove="remove"
+      @vca-autocomplete-focus="focusInput"
+      @vca-autocomplete-blur="blurInput"
+    />
+    <div v-if="showOptions" class="user-widget-options">
       <button v-if="page.hasPrevious()" v-on:click="removePage" class="paginate">
         {{ $vcaI18n.tc('label.pagination.button.previous', page.howManyPrevious(), { 'number': page.howManyPrevious() }) }}
       </button>
       <ul class="users">
         <li v-for="user in users" :key="user.id">
-          <SelectableUser :user="user" @vca-select-user="select" />
+          <SelectableUser :user="user" @vca-select-user="select" @vca-option-focus="focusOption" @vca-option-blur="blurOption" />
         </li>
       </ul>
       <button v-if="page.hasNext()" v-on:click="addPage" class="paginate">
@@ -49,7 +56,10 @@
           "config": config,
           "page": Page.apply(0, config.page.sliding, config.page.size),
           "errorState": null,
-          "type": "medium"
+          "inFocus": {
+            "input": false,
+            "option": false
+          }
         }
       },
       computed: {
@@ -61,6 +71,12 @@
         },
         emptyQuery () {
           return this.query.query === ""
+        },
+        focused () {
+          return this.inFocus.input || this.inFocus.selected || this.inFocus.option
+        },
+        showOptions () {
+          return this.hasUser && this.focused
         }
       },
       created () {
@@ -150,6 +166,23 @@
           this.selected = this.selected.filter(u => u.id !== user.id)
           this.getCount()
           this.getPage()
+        },
+        focusOption () {
+          this.inFocus.option = true
+        },
+        blurOption () {
+          this.inFocus.option = false
+        },
+        focusInput () {
+
+          // should be a concrete state of this component!
+          // this.$refs.userWidgetOptions.classList.add("visible")
+          this.inFocus.input = true
+        },
+        blurInput () {
+          // this.$refs.userWidgetOptions.classList.remove("visible")
+          // this.focused = false
+          this.inFocus.input = false
         }
       }
     }
@@ -169,11 +202,7 @@
     width: 100%;
     z-index: 1100;
     background-color: #fff;
-    border: 1px solid #dcdfe6;
-
-    &.visible {
-      display: block;
-    }
+    border: 1px solid #409eff ;
   }
 
   .users {

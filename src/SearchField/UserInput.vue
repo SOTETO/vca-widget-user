@@ -1,7 +1,7 @@
 <template>
   <div class="search">
-    <input v-bind:value="keyword" :placeholder="$vcaI18n.t('label.placeholder.search')"
-           v-on:input="input" v-on:keyup.enter.prevent="clear" v-on:keyup.space.prevent="clear" />
+    <input v-bind:value="keyword" :placeholder="$vcaI18n.t('label.placeholder.search')" ref="search"
+           v-on:input="input" v-on:keyup.enter.prevent="clear" v-on:keyup.space.prevent="clear" @focus="focus" @blur="blur"/>
     <button v-if="complexQueries" @click="clear" :title="$vcaI18n.t('label.search.button.and')">
       <div v-html="require('../images/plus.svg')" />
     </button>
@@ -21,12 +21,21 @@
         "complexQueries": {
           "type": Boolean,
           "default": true
+        },
+        "focused": {
+          "type": Boolean,
+          "default": false
         }
       },
       data () {
           return {
             "keyword": ""
           }
+      },
+      mounted(){
+        if(this.focused) {
+          this.$refs.search.focus();
+        }
       },
       methods: {
         input: function (event) {
@@ -44,6 +53,12 @@
             this.keyword = ""
             this.$emit("commitFilter")
           }
+        },
+        focus () {
+          this.$emit("vca-input-focus")
+        },
+        blur () {
+          this.$emit("vca-input-blur")
         }
       }
     }
@@ -58,8 +73,14 @@
 
     input {
       flex-grow: 1;
-      .inputElement();
+      //.inputElement();
+      background-color: transparent;
+      border: 0;
       padding: 0 0.25em;
+      &:active, &:focus {
+        border: 0;
+        outline: 0;
+      }
     }
 
     button {

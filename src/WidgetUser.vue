@@ -4,10 +4,10 @@
       <Avatar v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></Avatar>
       <InfoField v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></InfoField>
     </div>
-    <a v-else :class="classes" class="card user" v-bind:href="getURL()">
+    <a v-else :class="classes" class="card user" v-bind:href="getURL()" @focus="focus" @blur="blur">
       <Avatar v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></Avatar>
       <InfoField v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></InfoField>
-      <button class="remove" v-if="type === 'small' && removable" @click.stop.prevent="remove">X</button>
+      <button class="remove" v-if="type === 'small' && removable" @click.stop.prevent="remove" @focus="focus" @blur="blur">X</button>
     </a>
     <span v-if="type !== 'small'" class="roles" :class="rolesExist() ? 'exists' : 'empty'">
       {{ getRoles().map((role) => $vcaI18n.t('value.roles.' + role.role)).join(", ") }}
@@ -106,6 +106,12 @@
       },
       remove () {
         this.$emit('vca-user-remove', this.userData)
+      },
+      focus () {
+        this.$emit('vca-user-focus', this.userData)
+      },
+      blur () {
+        this.$emit('vca-user-blur', this.userData)
       }
     }
   }

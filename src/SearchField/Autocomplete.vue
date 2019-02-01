@@ -1,9 +1,9 @@
 <template>
-  <div class="autocomplete">
+  <div class="autocomplete" ref="autocomplete">
     <div class="selected">
-      <WidgetUser v-for="user in selected" :user="user" type="small" :key="user.id" :removable="true" @vca-user-remove="remove" />
+      <WidgetUser v-for="user in selected" :user="user" type="small" :key="user.id" :removable="true" @vca-user-remove="remove" @vca-user-focus="focus" @vca-user-blur="blur" />
     </div>
-    <UserInput :complexQueries="false" @addFilter="add" @popFilter="pop" />
+    <UserInput :complexQueries="false" @addFilter="add" @popFilter="pop" @vca-input-focus="focus" @vca-input-blur="blur" :focused="focused" />
   </div>
 </template>
 
@@ -18,6 +18,10 @@
       "selected": {
         "type": Array,
         "default": []
+      },
+      "focused": {
+        "type": Boolean,
+        "default": false
       }
     },
     data () {
@@ -57,15 +61,36 @@
       },
       remove(user) {
         this.$emit('vca-user-remove', user)
+      },
+      focus () {
+        this.$emit('vca-autocomplete-focus')
+        this.$refs.autocomplete.classList.add("vca-focused")
+      },
+      blur() {
+        this.$emit('vca-autocomplete-blur')
+        this.$refs.autocomplete.classList.remove("vca-focused")
       }
     }
   }
 </script>
 
 <style scoped lang="less">
+  @import '../assets/general.less';
   .autocomplete {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    .inputElement();
+    padding: 0 0.25em;
+    height: 2.5em;
+
+    &.vca-focused {
+      border-color: #409eff;
+    }
+
+    &:not(.vca-focused):hover {
+      border-color: #c0c4cc
+    }
 
     & /deep/ .search {
       flex-grow: 1;

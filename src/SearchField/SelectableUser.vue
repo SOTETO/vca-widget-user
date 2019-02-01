@@ -1,5 +1,5 @@
 <template>
-  <button class="user" @click.prevent="commit">
+  <button class="user" @click.prevent="commit" @focus="focus" @blur="blur">
     <Avatar v-bind:error-code="errorState" v-bind:user="userData" type="medium"></Avatar>
     <div class="infos">
       <div class="text">
@@ -96,6 +96,12 @@
     methods: {
       commit () {
         this.$emit("vca-select-user", this.userData)
+      },
+      focus () {
+        this.$emit("vca-option-focus", this.userData)
+      },
+      blur () {
+        this.$emit("vca-option-blur", this.userData)
       }
     }
   }
@@ -109,8 +115,10 @@
     .colorProfileSecundary();
     border: 0;
 
-    &:hover {
+    &:hover, &:active, &:focus {
       .colorProfilePrimary();
+      border: 0;
+      outline: 0;
     }
 
     display: flex;
