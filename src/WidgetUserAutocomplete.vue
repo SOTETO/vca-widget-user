@@ -46,6 +46,10 @@
         "placeholder": {
           "type": String,
           "required": false
+        },
+        "preselection": {
+          "type": Array,
+          "default": []
         }
       },
       data () {
@@ -58,7 +62,7 @@
 
         return {
           "users": [],
-          "selected": [],
+          "selected": this.preselection,
           "query": { 'query': '', 'values': {} },
           "config": config,
           "page": Page.apply(0, config.page.sliding, config.page.size),
@@ -92,10 +96,6 @@
           }
           return data
         }
-      },
-      created () {
-        // this.getCount()
-        // this.getPage()
       },
       methods: {
         addPage: function (event) {
@@ -175,11 +175,13 @@
           this.selected.push(user)
           this.getCount()
           this.getPage()
+          this.commit()
         },
         remove(user) {
           this.selected = this.selected.filter(u => u.id !== user.id)
           this.getCount()
           this.getPage()
+          this.commit()
         },
         focusOption () {
           this.inFocus.option = true
@@ -197,6 +199,9 @@
           // this.$refs.userWidgetOptions.classList.remove("visible")
           // this.focused = false
           this.inFocus.input = false
+        },
+        commit () {
+          this.$emit('vca-user-selection', this.selected)
         }
       }
     }
