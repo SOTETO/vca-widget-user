@@ -1,6 +1,14 @@
 <template>
   <div class="searchWrapper">
-    <UserInput @addFilter="add" @commitFilter="commitFilter" @popFilter="pop" />
+    <div class="searchInput">
+      <UserInput
+        @addFilter="add"
+        @commitFilter="commitFilter"
+        @popFilter="pop"
+        @vca-input-focus="focus"
+        @vca-input-blur="blur"
+      />
+    </div>
     <SearchTagSet :queries="currentQueries" @removeFilter="update" />
   </div>
 </template>
@@ -58,11 +66,32 @@
             'values': {}
           })
         }
+      },
+      focus () {
+        this.$emit('vca-autocomplete-focus')
+        this.$refs.autocomplete.classList.add("vca-focused")
+      },
+      blur() {
+        this.$emit('vca-autocomplete-blur')
+        this.$refs.autocomplete.classList.remove("vca-focused")
       }
     }
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+  @import '../assets/general.less';
+  .searchInput {
+    .inputElement();
+    padding: 0.25em;
+    height: 2.75em;
 
+    &.vca-focused {
+      border-color: #409eff;
+    }
+
+    &:not(.vca-focused):hover {
+      border-color: #c0c4cc
+    }
+  }
 </style>
