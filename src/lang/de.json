@@ -71,7 +71,8 @@
       "gender": "Geschlecht"
     },
     "placeholder": {
-      "search": "Suche..."
+      "search": "Suche...",
+      "autocomplete": "Wähle einen Supporter..."
     },
     "search": {
       "Supporter_firstName": "Vorname",

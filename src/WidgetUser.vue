@@ -4,9 +4,10 @@
       <Avatar v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></Avatar>
       <InfoField v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></InfoField>
     </div>
-    <a v-else :class="type" class="card user" v-bind:href="getURL()">
+    <a v-else :class="classes" class="card user" v-bind:href="getURL()" @focus="focus" @blur="blur">
       <Avatar v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></Avatar>
       <InfoField v-bind:error-code="errorState" v-bind:user="userData" v-bind:type="type"></InfoField>
+      <button class="remove" v-if="type === 'small' && removable" @click.stop.prevent="remove" @focus="focus" @blur="blur">X</button>
     </a>
     <span v-if="type !== 'small'" class="roles" :class="rolesExist() ? 'exists' : 'empty'">
       {{ getRoles().map((role) => $vcaI18n.t('value.roles.' + role.role)).join(", ") }}
@@ -26,7 +27,24 @@
 
   export default {
     name: 'UserWidget',
-    props: ['uuid', 'type', 'user'],
+    props: {
+      "uuid": {
+        "type": String,
+        "required": false
+      },
+      "type": {
+        "type": String,
+        "required": true
+      },
+      "user": {
+        "type": Object,
+        "required": false
+      },
+      "removable": {
+        "type": Boolean,
+        "default": false
+      }
+    },
     components: {
       'Avatar': Avatar,
       'InfoField': InfoField
@@ -37,6 +55,15 @@
         userData: this.user,
         uuidData: this.uuid// ,
         // typeData: null
+      }
+    },
+    computed: {
+      classes () {
+        var classes = this.type
+        if(this.removable) {
+          classes += " removable"
+        }
+        return classes
       }
     },
     created () {
@@ -76,6 +103,15 @@
       },
       rolesExist: function () {
         return this.getRoles().length > 0
+      },
+      remove () {
+        this.$emit('vca-user-remove', this.userData)
+      },
+      focus () {
+        this.$emit('vca-user-focus', this.userData)
+      },
+      blur () {
+        this.$emit('vca-user-blur', this.userData)
       }
     }
   }
@@ -86,6 +122,7 @@
   @import "./assets/responsive.less";
 
   #sizes() {
+    removable: 1em;
     small: 6em;
     medium: 15em;
     large: 10em;
@@ -144,6 +181,14 @@
       padding: 0.2em 0.5em;
       justify-content: center;
 
+      &.removable {
+        padding: 0 0 0 0.5em;
+        width: #sizes[small] + #sizes[removable];
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
       &:hover {
         background-color: #colors[thirdlyHover];
       }
@@ -167,6 +212,22 @@
       text-align: center;
       flex-direction: column;
       width: #sizes[large];
+    }
+  }
+
+  .remove {
+    width: 20%;
+    background-color: #colors[warn-inactive];
+    border: 0;
+    /*border-width: 1px;
+    border-style: solid;
+    border-color: #colors[secundary];*/
+    border-radius: 0 @radius @radius 0;
+    padding: 0.2em 0.2em;
+
+    &:hover {
+      /*font-weight: bold;*/
+      background-color: #colors[warn];
     }
   }
 </style>

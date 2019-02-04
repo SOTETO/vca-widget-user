@@ -1,5 +1,6 @@
 import WidgetUser from './WidgetUser.vue'
 import WidgetUserList from './WidgetUserList.vue'
+import WidgetUserAutocomplete from './WidgetUserAutocomplete.vue'
 import VcARole from './VcARole.vue'
 import Avatar from './Avatar.vue'
 import VueI18n from 'vue-i18n'
@@ -65,12 +66,21 @@ WidgetUserList.install = function (Vue, options) {
   Vue.component('widget-user-list', WidgetUserList)
 }
 
+WidgetUserAutocomplete.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.use(VcARole, options)
+  Vue.use(WidgetUser, options)
+  Vue.use(Avatar, options)
+  Vue.component('widget-user-autocomplete', WidgetUserAutocomplete)
+}
+
 // Install by default if using the script tag
 if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.use(Avatar)
   window.Vue.use(VcARole)
   window.Vue.use(WidgetUser)
   window.Vue.use(WidgetUserList)
+  window.Vue.user(WidgetUserAutocomplete)
 }
 
 export default WidgetUserList
@@ -81,5 +91,6 @@ export {
   VcARole,
   WidgetUser,
   WidgetUserList,
+  WidgetUserAutocomplete,
   version
 }
