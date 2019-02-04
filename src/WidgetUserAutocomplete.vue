@@ -226,7 +226,9 @@
 
   .users {
     list-style: none;
+    line-height: 1em;
     padding: 0;
+    margin: 0;
   }
 
   .paginate {

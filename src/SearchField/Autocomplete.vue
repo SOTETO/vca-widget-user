@@ -1,9 +1,8 @@
 <template>
   <div class="autocomplete" ref="autocomplete">
     <div class="selected">
-      <WidgetUser v-for="user in selected"
+      <Tag v-for="user in selected"
                   :user="user"
-                  type="small"
                   :key="user.id"
                   :removable="true"
                   @vca-user-remove="remove"
@@ -25,11 +24,11 @@
 
 <script>
   import UserInput from './UserInput'
-  import WidgetUser from '../WidgetUser'
+  import Tag from '../UserRepresentation/Tag'
 
   export default {
     name: "Autocomplete",
-    components: { UserInput, WidgetUser },
+    components: { UserInput, Tag },
     props: {
       "selected": {
         "type": Array,
@@ -101,7 +100,7 @@
     flex-direction: row;
     align-items: center;
     .inputElement();
-    padding: 0 0.25em;
+    padding: 0.25em;
     height: 2.5em;
 
     &.vca-focused {
@@ -119,10 +118,7 @@
     .selected {
       display: flex;
       flex-direction: row;
-      & /deep/ .user-role-wrapper {
-        .card {
-          font-size: 1em;
-        }
+      & /deep/ .tag {
         &:not(:first-child) {
           margin-left: 0.2em;
         }

@@ -114,6 +114,7 @@
     margin: 0;
     .colorProfileSecundary();
     border: 0;
+    padding: 0.1em 0em;
 
     &:hover, &:active, &:focus {
       .colorProfilePrimary();

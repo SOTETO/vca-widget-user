@@ -10,13 +10,9 @@
 
 <script>
   import FilterQuery from '../utils/FilterQuery'
-  import WidgetUsers from '../WidgetUsers'
 
     export default {
       name: "UserInput",
-      components: {
-        "WidgetUsers": WidgetUsers
-      },
       props: {
         "complexQueries": {
           "type": Boolean,
