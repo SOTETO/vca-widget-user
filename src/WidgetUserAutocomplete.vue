@@ -9,6 +9,7 @@
       v-on:newQuery="setQuery"
       :selected="selected"
       :focused="focused"
+      :placeholder="placeholderString"
       @vca-user-remove="remove"
       @vca-autocomplete-focus="focusInput"
       @vca-autocomplete-blur="blurInput"
@@ -40,6 +41,12 @@
       components: {
         'SelectableUser': SelectableUser,
         'Autocomplete': Autocomplete
+      },
+      props: {
+        "placeholder": {
+          "type": String,
+          "required": false
+        }
       },
       data () {
         var config = {
@@ -77,6 +84,13 @@
         },
         showOptions () {
           return this.hasUser && this.focused
+        },
+        placeholderString () {
+          var data = this.$vcaI18n.t('label.placeholder.autocomplete')
+          if(typeof this.placeholder === "string" && this.placeholder !== null) {
+            data = this.placeholder
+          }
+          return data
         }
       },
       created () {
@@ -202,7 +216,7 @@
     width: 100%;
     z-index: 1100;
     background-color: #fff;
-    border: 1px solid #409eff ;
+    border: 1px solid #409eff;
   }
 
   .users {

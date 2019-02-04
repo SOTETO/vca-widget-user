@@ -1,9 +1,25 @@
 <template>
   <div class="autocomplete" ref="autocomplete">
     <div class="selected">
-      <WidgetUser v-for="user in selected" :user="user" type="small" :key="user.id" :removable="true" @vca-user-remove="remove" @vca-user-focus="focus" @vca-user-blur="blur" />
+      <WidgetUser v-for="user in selected"
+                  :user="user"
+                  type="small"
+                  :key="user.id"
+                  :removable="true"
+                  @vca-user-remove="remove"
+                  @vca-user-focus="focus"
+                  @vca-user-blur="blur"
+      />
     </div>
-    <UserInput :complexQueries="false" @addFilter="add" @popFilter="pop" @vca-input-focus="focus" @vca-input-blur="blur" :focused="focused" />
+    <UserInput
+      :complexQueries="false"
+      :focused="focused"
+      :placeholder="placeholder"
+      @addFilter="add"
+      @popFilter="pop"
+      @vca-input-focus="focus"
+      @vca-input-blur="blur"
+    />
   </div>
 </template>
 
@@ -22,6 +38,10 @@
       "focused": {
         "type": Boolean,
         "default": false
+      },
+      "placeholder": {
+        "type": String,
+        "required": false
       }
     },
     data () {

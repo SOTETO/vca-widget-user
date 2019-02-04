@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <input v-bind:value="keyword" :placeholder="$vcaI18n.t('label.placeholder.search')" ref="search"
+    <input v-bind:value="keyword" :placeholder="placeholderString" ref="search"
            v-on:input="input" v-on:keyup.enter.prevent="clear" v-on:keyup.space.prevent="clear" @focus="focus" @blur="blur"/>
     <button v-if="complexQueries" @click="clear" :title="$vcaI18n.t('label.search.button.and')">
       <div v-html="require('../images/plus.svg')" />
@@ -25,12 +25,25 @@
         "focused": {
           "type": Boolean,
           "default": false
+        },
+        "placeholder": {
+          "type": String,
+          "required": false
         }
       },
       data () {
-          return {
-            "keyword": ""
+        return {
+          "keyword": ""
+        }
+      },
+      computed: {
+        placeholderString () {
+          var placeholderData = this.$vcaI18n.t('label.placeholder.search')
+          if(typeof this.placeholder === "string" && this.placeholder !== null) {
+            placeholderData = this.placeholder
           }
+          return placeholderData
+        }
       },
       mounted(){
         if(this.focused) {
