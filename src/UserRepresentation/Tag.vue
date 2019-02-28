@@ -1,20 +1,25 @@
 <template>
-    <a class="tag" :class="classes" v-bind:href="url" @focus="focus" @blur="blur">
-      <UserName :user="user" />
+    <a class="tag" :class="classes" v-bind:href="url()" @focus="focus" @blur="blur">
+      <UserName :user="userData" />
       <button class="remove" v-if="removable" @click.stop.prevent="remove" @focus="focus" @blur="blur">X</button>
     </a>
 </template>
 
 <script>
+  import axios from 'axios'
   import UserName from './UserName'
 
   export default {
     name: "Tag",
     components: { UserName },
     props: {
+      "uuid": {
+        "type": String,
+        "required": false
+      },
       "user": {
         "type": Object,
-        "required": true
+        "required": false
       },
       "removable": {
         "type": Boolean,
@@ -22,9 +27,6 @@
       }
     },
     computed: {
-      url () {
-        return '/arise/#/user/' + this.user.id
-      },
       classes () {
         var classes = ""
         if(this.removable) {
@@ -32,7 +34,30 @@
         }
       }
     },
+    data () {
+      return {
+        "userData": this.user,
+        "errorState": null
+      }
+    },
+    created () {
+      if (this.userData == null) {
+        axios.get('/drops/widgets/user/' + this.uuid)
+          .then(response => {
+            switch (response.status) {
+              case 200:
+                this.userData = response.data.additional_information
+                break
+            }
+          }).catch(error => {
+          this.errorState = error.response.status
+        })
+      }
+    },
     methods: {
+      url () {
+        return '/arise/#/user/' + this.userData.id
+      },
       remove () {
         this.$emit('vca-user-remove', this.user)
       },

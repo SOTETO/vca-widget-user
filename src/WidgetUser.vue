@@ -99,7 +99,11 @@
         return result
       },
       getRoles: function () {
-        return this.userData.roles.filter((role) => role.role !== "supporter")
+        var roles = []
+        if(!this.empty() && this.userData.hasOwnProperty("roles")) {
+          roles = this.userData.roles.filter((role) => role.role !== "supporter")
+        }
+        return roles
       },
       rolesExist: function () {
         return this.getRoles().length > 0
