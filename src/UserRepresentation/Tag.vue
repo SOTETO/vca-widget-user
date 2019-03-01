@@ -1,6 +1,7 @@
 <template>
     <a class="tag" :class="classes" v-bind:href="url" @focus="focus" @blur="blur">
-      <UserName v-if="isNotEmpty" :user="userData" />
+      <UserName v-if="isNotEmpty && !crew" :user="userData" />
+      <Crew v-if="isNotEmpty && crew" :user="userData" />
       <button class="remove" v-if="removable" @click.stop.prevent="remove" @focus="focus" @blur="blur">X</button>
     </a>
 </template>
@@ -8,10 +9,11 @@
 <script>
   import axios from 'axios'
   import UserName from './UserName'
+  import Crew from './Crew'
 
   export default {
     name: "Tag",
-    components: { UserName },
+    components: { UserName, Crew },
     props: {
       "uuid": {
         "type": String,
@@ -22,6 +24,10 @@
         "required": false
       },
       "removable": {
+        "type": Boolean,
+        "default": false
+      },
+      "crew": {
         "type": Boolean,
         "default": false
       }
