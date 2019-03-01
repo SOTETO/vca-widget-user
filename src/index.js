@@ -3,6 +3,7 @@ import WidgetUserList from './WidgetUserList.vue'
 import WidgetUserAutocomplete from './WidgetUserAutocomplete.vue'
 import VcARole from './VcARole.vue'
 import Avatar from './Avatar.vue'
+import Tag from './UserRepresentation/Tag.vue'
 import VueI18n from 'vue-i18n'
 import en from './lang/en.json'
 import de from './lang/de.json'
@@ -41,6 +42,11 @@ Avatar.install = function (Vue, options) {
   Vue.component('avatar', Avatar)
 }
 
+Tag.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.component('tag', Tag)
+}
+
 WidgetUser.install = function (Vue, options) {
   Vue = getLang(Vue, options)
   Vue.use(Avatar, options)
@@ -76,6 +82,7 @@ WidgetUserAutocomplete.install = function (Vue, options) {
 
 // Install by default if using the script tag
 if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(Tag)
   window.Vue.use(Avatar)
   window.Vue.use(VcARole)
   window.Vue.use(WidgetUser)
@@ -87,6 +94,7 @@ export default WidgetUserList
 const version = '__VERSION__'
 // Export all components too
 export {
+  Tag,
   Avatar,
   VcARole,
   WidgetUser,

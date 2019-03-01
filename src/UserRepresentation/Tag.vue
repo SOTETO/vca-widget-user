@@ -1,20 +1,25 @@
 <template>
     <a class="tag" :class="classes" v-bind:href="url" @focus="focus" @blur="blur">
-      <UserName :user="user" />
+      <UserName v-if="isNotEmpty" :user="userData" />
       <button class="remove" v-if="removable" @click.stop.prevent="remove" @focus="focus" @blur="blur">X</button>
     </a>
 </template>
 
 <script>
+  import axios from 'axios'
   import UserName from './UserName'
 
   export default {
     name: "Tag",
     components: { UserName },
     props: {
+      "uuid": {
+        "type": String,
+        "required": false
+      },
       "user": {
         "type": Object,
-        "required": true
+        "required": false
       },
       "removable": {
         "type": Boolean,
@@ -23,13 +28,40 @@
     },
     computed: {
       url () {
-        return '/arise/#/user/' + this.user.id
+        var url = '/arise/#/user/'
+        if(this.isNotEmpty) {
+          url = url + this.userData.id
+        }
+        return url
       },
       classes () {
         var classes = ""
         if(this.removable) {
           classes = "removable"
         }
+      },
+      isNotEmpty () {
+        return typeof this.userData !== "undefined" && this.userData !== null
+      }
+    },
+    data () {
+      return {
+        "userData": this.user,
+        "errorState": null
+      }
+    },
+    created () {
+      if (this.userData == null) {
+        axios.get('/drops/widgets/user/' + this.uuid)
+          .then(response => {
+            switch (response.status) {
+              case 200:
+                this.userData = response.data.additional_information
+                break
+            }
+          }).catch(error => {
+          this.errorState = error.response.status
+        })
       }
     },
     methods: {
