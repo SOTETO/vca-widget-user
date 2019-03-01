@@ -1,6 +1,6 @@
 <template>
-    <a class="tag" :class="classes" v-bind:href="url()" @focus="focus" @blur="blur">
-      <UserName :user="userData" />
+    <a class="tag" :class="classes" v-bind:href="url" @focus="focus" @blur="blur">
+      <UserName v-if="isNotEmpty" :user="userData" />
       <button class="remove" v-if="removable" @click.stop.prevent="remove" @focus="focus" @blur="blur">X</button>
     </a>
 </template>
@@ -27,11 +27,21 @@
       }
     },
     computed: {
+      url () {
+        var url = '/arise/#/user/'
+        if(this.isNotEmpty) {
+          url = url + this.userData.id
+        }
+        return url
+      },
       classes () {
         var classes = ""
         if(this.removable) {
           classes = "removable"
         }
+      },
+      isNotEmpty () {
+        return typeof this.userData !== "undefined" && this.userData !== null
       }
     },
     data () {
@@ -55,9 +65,6 @@
       }
     },
     methods: {
-      url () {
-        return '/arise/#/user/' + this.userData.id
-      },
       remove () {
         this.$emit('vca-user-remove', this.user)
       },
