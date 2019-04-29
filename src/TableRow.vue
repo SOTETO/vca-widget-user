@@ -1,5 +1,6 @@
 <template>
   <tr v-if="type === 'header'" :class="getClass()" class="rowWrapper">
+    <th class="selection"><input type="checkbox" @change="selectAllUsers" class="custom-control-input" /></div></th>
     <th class="image">{{ $vcaI18n.t('label.table.avatar') }}</th>
     <th class="name">{{ $vcaI18n.t('label.table.name') }}</th>
     <th class="since">{{ $vcaI18n.t('label.table.since') }}</th>
@@ -9,18 +10,21 @@
     <th class="age noPhone noTablet">{{ $vcaI18n.t('label.table.age') }}</th>
     <th class="gender noPhone noTablet">{{ $vcaI18n.t('label.table.gender') }}</th>
   </tr>
-  <tr v-else :class="getClass()" class="rowWrapper content" v-on:click="callLink()">
-    <td class="image">
+  <tr v-else :class="getClass()" class="rowWrapper content">
+    <td class="selection">
+      <input type="checkbox" v-on:click="selectUser" :checked="selected" class="custom-control-input"/>
+    </td>
+    <td class="image" v-on:click="callLink()">
       <Avatar v-bind:error-code="errorState" v-bind:user="user" type="medium"></Avatar>
     </td>
-    <td class="name">
+    <td class="name" v-on:click="callLink()">
       <a :href="getURL()" ref="profileLink">{{ user.profiles[0].supporter.fullName }}</a>
       <div class="roles">
         <VcARole v-for="role in user.roles.filter((r) => r.role !== 'supporter')" :name="role.role" :key="role.role" />
       </div>
     </td>
-    <td class="since">{{ getSince() }}</td>
-    <td class="crew">
+    <td class="since" v-on:click="callLink()">{{ getSince() }}</td>
+    <td class="crew" v-on:click="callLink()">
       {{ hasCrew() ? user.profiles[0].supporter.crew.name : $vcaI18n.t('fallback.noCrew') }}
       <div class="roles">
         <VcARole
@@ -31,10 +35,10 @@
         />
       </div>
     </td>
-    <td class="email noPhone">{{ user.profiles[0].email }}</td>
-    <td class="mobilePhone noPhone">{{ user.profiles[0].supporter.mobilePhone }}</td>
-    <td class="age noPhone noTablet">{{ getAge() }}</td>
-    <td class="gender noPhone noTablet">{{ getGender() }}</td>
+    <td class="email noPhone" v-on:click="callLink()">{{ user.profiles[0].email }}</td>
+    <td class="mobilePhone noPhone" v-on:click="callLink()">{{ user.profiles[0].supporter.mobilePhone }}</td>
+    <td class="age noPhone noTablet" v-on:click="callLink()">{{ getAge() }}</td>
+    <td class="gender noPhone noTablet" v-on:click="callLink()">{{ getGender() }}</td>
   </tr>
 </template>
 
@@ -44,12 +48,23 @@
 
     export default {
       name: 'TableRow',
-      props: ['className', 'type', 'user', 'errorState'],
+      props: ['className', 'type', 'user', 'errorState', 'selected'],
       components: {
         'Avatar': Avatar,
         'VcARole': VcARole
       },
       methods: {
+	selectUser: function() {
+	  this.$root.$emit('doSelectUser', this.user.id);
+	},
+	selectAllUsers: function(event) {
+	  if (event.target.checked) {
+	    this.$root.$emit('doSelectAllUser');
+	  } else {
+	    this.$root.$emit('doUnSelectAllUser');
+	  }
+
+	},
         getClass: function () {
           return this.type + ' ' + this.className
         },
@@ -172,6 +187,10 @@
 
   .image {
     width: 4em;
+  }
+
+  .selection {
+    width: 3em;
   }
 
   .noPhone {

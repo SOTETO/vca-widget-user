@@ -7,6 +7,16 @@
   </div>
   <div v-else class="user-widget-list">
     <SearchField v-bind:query="query" v-on:newQuery="setQuery" />
+
+    <div class="vca-button-selections">
+	    <!--ActionButton v-bind:query="query" v-on:newQuery="setQuery" /-->
+	    <button class="vca-button-primary vca-button-selection" v-on:click="setUsersActive()" >
+	      {{ $vcaI18n.t('label.active.button.confirm') }}
+	    </button>    
+	    <button class="vca-button-primary vca-button-selection" v-on:click="setUsersInActive()" >
+	      {{ $vcaI18n.t('label.active.button.decline') }}
+	    </button>
+    </div>
     <ListMenu v-bind:type="type"
               v-bind:sorting="sorting"
               v-on:typeSelect="setType"
@@ -59,6 +69,7 @@
         page: Page.apply(0, pageParams.sliding, pageParams.size),
         sorting: new Sorting(config.getType(), this.$vcaI18n, config.getSortingInit()),
         query: { 'query': '', 'values': {} },
+	selectedUsers: [],
         errorState: null
       }
     },
@@ -71,7 +82,36 @@
       this.getCount()
       this.getPage()
     },
+    mounted() {
+	this.$root.$on('setSelectedUsers', (userList) => { this.setSelectedUsers(userList); })
+    },
     methods: {
+      setUsersActive: function() {
+	console.log("TODO: Implementation of AJAX confirm request for users:");
+	console.log(this.selectedUsers);
+	if (!confirm(this.$t('label.active.messages.confirm'))) {
+		return false;
+	}
+        var request = {
+	  'users': this.selectedUsers
+	}
+	//this.submit('/drops/webapp/users/active/active', request);
+      },
+      setUsersInActive: function() {
+	console.log("TODO: Implementation of AJAX decline request for users:");
+	console.log(this.selectedUsers);
+
+	if (!confirm(this.$t('label.active.messages.decline'))) {
+		return false;
+	}
+        var request = {
+	  'users': this.selectedUsers
+	}
+	//this.submit('/drops/webapp/users/active/inactive', request);
+      },
+      setSelectedUsers: function (userList) {
+	this.selectedUsers = userList;
+      },
       addPage: function (event) {
         if (this.page.hasNext()) {
           this.page = this.page.next()
@@ -176,6 +216,14 @@
       text-decoration: none;
       color: #colors[primary];
     }
+  }
+
+  .vca-button-selections {
+	margin-top: 0.5em;
+  }
+
+  .vca-button-selection {
+	width: 200px;
   }
 
   .paginate {

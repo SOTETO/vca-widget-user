@@ -48,6 +48,16 @@
         "gender" : "Geschlecht"
       }
     },
+    "active": {
+	"button": {
+		"confirm": "Aktivitätsanfrage<br/>bestätigen",
+		"decline": "Aktivitätsanfrage<br/>ablehnen"
+	},
+	"messages": {
+		"confirm": "Willst du die Aktivitätsanfragen für die ausgewählten Supporter annehmen?",
+		"decline": "Willst du die Aktivitätsanfragen für die ausgewählten Supporter ablehnen?"
+	}
+    },
     "typeSelection": {
       "large": "Große Widgets",
       "medium": "Kleine Widgets",

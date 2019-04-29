@@ -82,7 +82,7 @@
     "sinon-chai": "^2.10.0",
     "style-loader": "^0.17.0",
     "stylefmt": "^5.3.0",
-    "stylelint": "^9.6.0",
+    "stylelint": "^9.10.1",
     "stylelint-config-standard": "^16.0.0",
     "stylelint-processor-html": "^1.0.0",
     "svg-inline-loader": "^0.8.0",
@@ -140,5 +140,14 @@
   "browserslist": [
     "last 2 versions"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "ajv": "^6.10.0",
+    "axios": "^0.18.0",
+    "deepmerge": "^2.2.1",
+    "v-tooltip": "^2.0.2",
+    "vue-i18n": "^8.11.1",
+    "vue-select": "^2.6.4",
+    "vue2-scrollbar": "0.0.3",
+    "xdate": "^0.8.2"
+  }
 }
