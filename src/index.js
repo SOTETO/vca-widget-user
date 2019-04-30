@@ -4,6 +4,8 @@ import WidgetUserAutocomplete from './WidgetUserAutocomplete.vue'
 import VcARole from './VcARole.vue'
 import Avatar from './Avatar.vue'
 import Tag from './UserRepresentation/Tag.vue'
+import CrewSelect from './CrewSelect'
+import CrewPlainName from './CrewPlainName'
 import VueI18n from 'vue-i18n'
 import en from './lang/en.json'
 import de from './lang/de.json'
@@ -47,6 +49,16 @@ Tag.install = function (Vue, options) {
   Vue.component('tag', Tag)
 }
 
+CrewSelect.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.component('crew-select', CrewSelect)
+}
+
+CrewPlainName.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.component('crew-plain-name', CrewPlainName)
+}
+
 WidgetUser.install = function (Vue, options) {
   Vue = getLang(Vue, options)
   Vue.use(Avatar, options)
@@ -82,6 +94,8 @@ WidgetUserAutocomplete.install = function (Vue, options) {
 
 // Install by default if using the script tag
 if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(CrewPlainName)
+  window.Vue.use(CrewSelect)
   window.Vue.use(Tag)
   window.Vue.use(Avatar)
   window.Vue.use(VcARole)
@@ -94,6 +108,8 @@ export default WidgetUserList
 const version = '__VERSION__'
 // Export all components too
 export {
+  CrewPlainName,
+  CrewSelect,
   Tag,
   Avatar,
   VcARole,

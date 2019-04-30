@@ -97,5 +97,11 @@
   },
   "fallback": {
     "noCrew": "No Crew"
+  },
+  "crews": {
+    "select": {
+      "noCrewsAvailable": "There are no crews available",
+      "placeholder": "Please choose a crew..."
+    }
   }
 }
