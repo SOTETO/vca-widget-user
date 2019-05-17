@@ -1,25 +1,25 @@
 <template>
-  <button class="user" @click.prevent="commit" @focus="focus" @blur="blur">
-    <Avatar v-bind:error-code="errorState" v-bind:user="userData" type="medium"></Avatar>
-    <div class="infos">
-      <div class="text">
-        <span class="name">
-          <span class="firstName">{{ userData.profiles[0].supporter.firstName }}</span>
-          <span class="lastName">{{ userData.profiles[0].supporter.lastName }}</span>
-        </span>
-        <span class="crew">{{ crew }}</span>
+    <button class="user" @click.prevent="commit" @focus="focus" @blur="blur">
+      <Avatar v-bind:error-code="errorState" v-bind:user="userData" type="medium"></Avatar>
+      <div class="infos">
+        <div class="text">
+          <span class="name">
+            <span class="firstName">{{ userData.profiles[0].supporter.firstName }}</span>
+            <span class="lastName">{{ userData.profiles[0].supporter.lastName }}</span>
+          </span>
+          <span class="crew">{{ crew }}</span>
+        </div>
+        <div class="roles">
+          <VcARole v-for="role in roles" :name="role.role" :key="role.role" />
+          <VcARole
+            v-for="role in crewRoles"
+            :role="role.name"
+            :pillar="role.pillar.pillar"
+            :key="role.name + '.' + role.crew.name + '.' + role.pillar.pillar"
+          />
+        </div>
       </div>
-      <div class="roles">
-        <VcARole v-for="role in roles" :name="role.role" :key="role.role" />
-        <VcARole
-          v-for="role in crewRoles"
-          :role="role.name"
-          :pillar="role.pillar.pillar"
-          :key="role.name + '.' + role.crew.name + '.' + role.pillar.pillar"
-        />
-      </div>
-    </div>
-  </button>
+    </button>
 </template>
 
 <script>

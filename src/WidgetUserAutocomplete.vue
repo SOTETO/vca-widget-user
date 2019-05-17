@@ -87,7 +87,7 @@
           return this.inFocus.input || this.inFocus.selected || this.inFocus.option
         },
         showOptions () {
-          return this.hasUser && this.focused
+          return this.hasUser // && this.focused
         },
         placeholderString () {
           var data = this.$vcaI18n.t('label.placeholder.autocomplete')
@@ -178,6 +178,7 @@
           this.commit()
         },
         remove(user) {
+          console.log("Remove log");
           this.selected = this.selected.filter(u => u.id !== user.id)
           this.getCount()
           this.getPage()
@@ -190,7 +191,6 @@
           this.inFocus.option = false
         },
         focusInput () {
-
           // should be a concrete state of this component!
           // this.$refs.userWidgetOptions.classList.add("visible")
           this.inFocus.input = true
@@ -200,7 +200,7 @@
           // this.focused = false
           this.inFocus.input = false
         },
-        commit () {
+        commit() {
           this.$emit('vca-user-selection', this.selected)
         }
       }
