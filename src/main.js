@@ -18,6 +18,8 @@ const i18n = new VueI18n({
   }
 })
 
+Vue.prototype.$vcaI18n = i18n
+
 Vue.use(ElementUI, {
   i18n: (key, value) => i18n.t(key, value)
 })

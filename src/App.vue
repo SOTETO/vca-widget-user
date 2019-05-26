@@ -1,6 +1,12 @@
 <template>
   <div id="app">
     <h1>Testing grounds for the vca-user-widget</h1>
+    <WidgetUserAutocomplete
+      :placeholder="widgetPlaceholder"
+      :preselection="involvedSupporter"
+      :SelectableUser="recipients"
+      @vca-user-selection="onUserSelected"
+    />
   </div>
 </template>
 
@@ -15,13 +21,14 @@ export default {
   data() {
     return {
       recipients: null,
+      widgetPlaceholder: "",
       involvedSupporter: [],
       autocompletePlaceholder: "asdasd"
     }
   },
   methods: {
     onUserSelected() {
-      alert('user selected');
+      alert('user selected')
     }
   }
 }
