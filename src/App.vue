@@ -1,17 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Testing grounds for the vca-user-widget</h1>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import WidgetUserAutocomplete from "./WidgetUserAutocomplete.vue"
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    WidgetUserAutocomplete
+  },
+  data() {
+    return {
+      recipients: null,
+      involvedSupporter: [],
+      autocompletePlaceholder: "asdasd"
+    }
+  },
+  methods: {
+    onUserSelected() {
+      alert('user selected');
+    }
   }
 }
 </script>
