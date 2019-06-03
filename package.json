@@ -5,10 +5,19 @@
   "author": "Johann Sell",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lib": "vue-cli-service build --target lib --name vca-widget-base src/lib.js",
-    "lint": "vue-cli-service lint",
-    "prepublish": "npm run lib"
+    "build": "yon run build:common && yon run build:browser && yon run build:browser:min",
+    "build:common": "cross-env NODE_ENV=common webpack --config build/webpack.config.common.js --progress --hide-modules",
+    "build:browser:base": "webpack --config build/webpack.config.browser.js --progress --hide-modules",
+    "build:browser": "cross-env NODE_ENV=browser yon run build:browser:base",
+    "build:browser:min": "cross-env NODE_ENV=production yon run build:browser:base -- -p",
+    "lib": "vue-cli-service build --target lib --name vca-widget-user src/lib.js",
+    "build:dll": "webpack --progress --config build/webpack.config.dll.js",
+    "clean": "rimraf dist",
+    "test": "cross-env BABEL_ENV=test karma start test/karma.conf.js --single-run",
+    "dev": "webpack-dashboard -- webpack-dev-server --config build/webpack.config.dev.js --open",
+    "dev:coverage": "cross-env BABEL_ENV=test karma start test/karma.conf.js",
+    "prepublish": "yon run build",
+    "lint": "vue-cli-service lint"
   },
   "main": "dist/vca-widget-user.common.js",
   "module": "dist/vca-widget-user.esm.js",
@@ -24,8 +33,7 @@
   ],
   "peerDependencies": {
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.2.2",
-    "webpack": "^4.32.2"
+    "eslint-plugin-vue": "^5.2.2"
   },
   "dependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
@@ -46,15 +54,20 @@
     "babel-plugin-transform-vue-jsx": "^3.4.0",
     "babel-preset-env": "^1.4.0",
     "core-js": "^2.6.5",
+    "cross-env": "^4.0.0",
     "deepmerge": "^2.2.1",
     "element-ui": "^2.8.2",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-vue": "^2.0.2",
-
+    "extract-text-webpack-plugin": "^2.1.0",
+    "add-asset-html-webpack-plugin": "^2.0.0",
+    "html-webpack-plugin": "^2.28.0",
     "file-loader": "^3.0.1",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "vue": "^2.6.10",
+    "postcss-cssnext": "^2.10.0",
+    "uppercamelcase": "^3.0.0",
     "vue-i18n": "^8.11.2",
     "vue-select": "^3.1.0",
     "vue-template-compiler": "^2.5.21",
@@ -63,7 +76,8 @@
     "webpack-dashboard": "^0.4.0",
     "webpack-dev-server": "^2.4.0",
     "webpack-merge": "^4.0.0",
-    "xdate": "^0.8.2"
+    "xdate": "^0.8.2",
+    "yarn-or-npm": "^2.0.0"
   },
   "dllPlugin": {
     "name": "vuePluginTemplateDeps",
@@ -96,5 +110,10 @@
   },
   "browserslist": [
     "last 2 versions"
-  ]
+  ],
+  "devDependencies": {
+    "webpack": "^2.7.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^2.11.5"
+  }
 }
