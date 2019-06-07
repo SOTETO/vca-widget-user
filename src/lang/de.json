@@ -116,5 +116,11 @@
   },
   "fallback": {
     "noCrew": "Keine Crew"
+  },
+  "crews": {
+    "select": {
+      "noCrewsAvailable": "Momentan kennt der Pool keine Crews.",
+      "placeholder": "Bitte wähle eine Crew..."
+    }
   }
 }
