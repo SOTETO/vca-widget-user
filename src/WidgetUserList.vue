@@ -8,12 +8,16 @@
   <div v-else class="user-widget-list">
     <SearchField v-bind:query="query" v-on:newQuery="setQuery" />
 
+<textarea style="height: 200px">{{ this.options.filter }}</textarea>
+<textarea style="height: 200px">{{ query }}</textarea>
+<textarea style="height: 200px">{{ filter }}</textarea>
+
     <div class="vca-button-selections">
 	    <!--ActionButton v-bind:query="query" v-on:newQuery="setQuery" /-->
-	    <button class="vca-button-primary vca-button-selection" v-on:click="setUsersActive()" >
+	    <button v-if="config.hasActionButton('active')" class="vca-button-primary vca-button-selection" v-on:click="setUsersActive()" >
 	      {{ $vcaI18n.t('label.active.button.confirm') }}
 	    </button>    
-	    <button class="vca-button-primary vca-button-selection" v-on:click="setUsersInActive()" >
+	    <button v-if="config.hasActionButton('active')" class="vca-button-primary vca-button-selection" v-on:click="setUsersInActive()" >
 	      {{ $vcaI18n.t('label.active.button.decline') }}
 	    </button>
     </div>
@@ -29,7 +33,7 @@
       {{ $vcaI18n.tc('label.pagination.button.previous', page.howManyPrevious(), { 'number': page.howManyPrevious() }) }}
     </button>
     <WidgetUsers v-if="type !== 'tableRow'" :users="users" :type="type" />
-    <TableUsers v-else :users="users" />
+    <TableUsers v-else :users="users" :showOptions="config.hasActionButtons()" />
     <button v-if="config.hasPagination() && page.hasNext()" v-on:click="addPage" class="paginate">
       {{ $vcaI18n.tc('label.pagination.button.next', page.howManyNext(), { 'number': page.howManyNext() }) }}
     </button>
@@ -47,10 +51,17 @@
   import TableUsers from './TableUsers'
   import WidgetUsers from './WidgetUsers'
   import SearchField from './SearchField/SearchField'
+  import {
+    Notification,
+    Button
+  } from 'element-ui'
+  Vue.use(Notification);
+  Vue.use(Button);
+  Notification.closeAll();
 
   export default {
     name: 'WidgetUserList',
-    props: ['options'],
+    props: ['options', 'filter'],
     components: {
       'ListMenu': ListMenu,
       'TableUsers': TableUsers,
@@ -68,7 +79,7 @@
         users: [],
         page: Page.apply(0, pageParams.sliding, pageParams.size),
         sorting: new Sorting(config.getType(), this.$vcaI18n, config.getSortingInit()),
-        query: { 'query': '', 'values': {} },
+        query: (this.options.filter ? this.options.filter : {}),
 	selectedUsers: [],
         errorState: null
       }
@@ -87,27 +98,42 @@
     },
     methods: {
       setUsersActive: function() {
-	console.log("TODO: Implementation of AJAX confirm request for users:");
-	console.log(this.selectedUsers);
 	if (!confirm(this.$t('label.active.messages.confirm'))) {
 		return false;
 	}
-        var request = {
-	  'users': this.selectedUsers
-	}
-	//this.submit('/drops/webapp/users/active/active', request);
+        let request = { users: this.selectedUsers };
+	this.submit('/drops/widgets/users/active', request);
       },
       setUsersInActive: function() {
-	console.log("TODO: Implementation of AJAX decline request for users:");
-	console.log(this.selectedUsers);
-
 	if (!confirm(this.$t('label.active.messages.decline'))) {
 		return false;
 	}
-        var request = {
-	  'users': this.selectedUsers
-	}
-	//this.submit('/drops/webapp/users/active/inactive', request);
+        let request = { users: this.selectedUsers };
+	this.submit('/drops/widgets/users/inactive', request);
+      },
+      submit(url, data) {
+
+	axios
+	  .post(url, data)
+	  .then(response => {
+		switch (response.status) {
+			case 200:
+				this.open(
+	  				this.$t('success.title'),
+	  				this.$t('success.msg'),
+	  				"success"
+				)
+                                window.location.reload();
+			break;
+		}
+	}).catch(error => {
+	    this.selection = this.default
+	    this.open(
+		this.$t('error.title'),
+		this.$t('error.unknown'),
+		"error"
+	    )
+	})
       },
       setSelectedUsers: function (userList) {
 	this.selectedUsers = userList;
@@ -184,6 +210,13 @@
       },
       hasError () {
         return this.errorState !== null && (typeof this.errorState !== 'undefined')
+      },
+      open(title, message, type) {
+        Notification({
+            title:  title,
+            message: message,
+            type: type
+        });
       }
     }
   }

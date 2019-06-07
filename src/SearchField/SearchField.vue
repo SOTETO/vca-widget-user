@@ -19,6 +19,7 @@
 
   export default {
     name: "SearchField",
+    props: ['query'],
     components: { UserInput, SearchTagSet },
     data () {
       return {

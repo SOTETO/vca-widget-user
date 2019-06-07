@@ -2,10 +2,10 @@
   <div class="users-table-wrapper">
     <table class="users-table">
       <thead>
-        <TableRow type="header" />
+        <TableRow type="header" :showOption="showOptions" />
       </thead>
       <tbody>
-        <TableRow v-for="(user, i) of users" type="row" :className="(i % 2 == 0) ? 'even' : 'odd'" :user="user" :key="user.id" :selected="checkUsers(user.id)" />
+        <TableRow v-for="(user, i) of users" type="row" :className="(i % 2 == 0) ? 'even' : 'odd'" :user="user" :key="user.id" :selected="checkUsers(user.id)" :showOption="showOptions" />
       </tbody>
     </table>
   </div>
@@ -16,7 +16,7 @@
     export default {
       name: 'TableUsers',
       components: { TableRow },
-      props: ['users'],
+      props: ['users', 'showOptions'],
       data () {
         return {
 	  selectedUsers: []

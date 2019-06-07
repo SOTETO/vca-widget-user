@@ -1,9 +1,14 @@
 {
   "error": {
+    "title": "Error",
     "notFound": "Not Found",
     "notAuthenticated": "Not Authenticated",
     "forbidden": "Forbidden",
     "unknown": "An unknown error occurred"
+  },
+  "success": {
+    "title": "Success",
+    "msg": "Your request has been successfully processed"
   },
   "value": {
     "gender": {
@@ -19,6 +24,10 @@
     },
     "age": {
       "notAvailable": "n/a"
+    },
+    "supporter": {
+      "active": "active",
+      "nvm": "non-voting member"
     }
   },
   "label": {
@@ -56,6 +65,10 @@
 	"messages": {
 		"confirm": "Do you want to confirm the active requests for the selected users?",
 		"decline": "Do you want to decline the active requests for the selected users?"
+	},
+	"response": {
+		"success": "Do you want to confirm the active requests for the selected users?",
+		"error": "Do you want to decline the active requests for the selected users?"
 	}
     },
     "typeSelection": {

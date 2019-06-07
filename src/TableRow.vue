@@ -1,6 +1,6 @@
 <template>
   <tr v-if="type === 'header'" :class="getClass()" class="rowWrapper">
-    <th class="selection"><input type="checkbox" @change="selectAllUsers" class="custom-control-input" /></div></th>
+    <th class="selection" v-if="showOption"><input type="checkbox" @change="selectAllUsers" class="custom-control-input" /></div></th>
     <th class="image">{{ $vcaI18n.t('label.table.avatar') }}</th>
     <th class="name">{{ $vcaI18n.t('label.table.name') }}</th>
     <th class="since">{{ $vcaI18n.t('label.table.since') }}</th>
@@ -11,7 +11,7 @@
     <th class="gender noPhone noTablet">{{ $vcaI18n.t('label.table.gender') }}</th>
   </tr>
   <tr v-else :class="getClass()" class="rowWrapper content">
-    <td class="selection">
+    <td class="selection" v-if="showOption">
       <input type="checkbox" v-on:click="selectUser" :checked="selected" class="custom-control-input"/>
     </td>
     <td class="image" v-on:click="callLink()">
@@ -33,6 +33,8 @@
           :pillar="role.pillar.pillar"
           :key="role.name + '.' + role.crew.name + '.' + role.pillar.pillar"
         />
+        <VcARole v-if="isActive()" :translated="$vcaI18n.t('value.supporter.active')"/>
+        <VcARole v-if="isNVM()" :translated="$vcaI18n.t('value.supporter.nvm')"/>
       </div>
     </td>
     <td class="email noPhone" v-on:click="callLink()">{{ user.profiles[0].email }}</td>
@@ -48,7 +50,7 @@
 
     export default {
       name: 'TableRow',
-      props: ['className', 'type', 'user', 'errorState', 'selected'],
+      props: ['className', 'type', 'user', 'errorState', 'selected', 'showOption'],
       components: {
         'Avatar': Avatar,
         'VcARole': VcARole
@@ -71,6 +73,14 @@
         hasCrew: function () {
           return this.user != null && typeof this.user !== 'undefined' &&
             this.user.profiles[0].supporter.hasOwnProperty('crew')
+        },
+        isNVM: function () {
+          return this.user != null && typeof this.user !== 'undefined' &&
+            this.user.profiles[0].supporter.hasOwnProperty('nvmDate')
+        },
+        isActive: function () {
+          return this.user != null && typeof this.user !== 'undefined' &&
+            this.user.profiles[0].supporter.hasOwnProperty('active') && this.user.profiles[0].supporter.active == 'active'
         },
         getGender: function() {
           var gender = this.user.profiles[0].supporter.sex

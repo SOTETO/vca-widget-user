@@ -1,9 +1,14 @@
 {
   "error": {
+    "title": "Fehler",
     "notFound": "Nichts gefunden",
     "notAuthenticated": "Nicht eingeloggt",
     "forbidden": "Keine Berechtigung",
     "unknown": "Ein unbekannter Fehler ist aufgetreten"
+  },
+  "success": {
+    "title": "Erfolg",
+    "msg": "Deine Anfrage wurde erfolgreich verarbeitet"
   },
   "value": {
     "gender": {
@@ -19,6 +24,10 @@
     },
     "age": {
       "notAvailable": "n.a."
+    },
+    "supporter": {
+      "active": "aktiv",
+      "nvm": "stimmrechtsloses Mitglied"
     }
   },
   "label": {
