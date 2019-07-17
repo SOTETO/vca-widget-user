@@ -16,16 +16,30 @@
 <script>
   import UserInput from './UserInput'
   import SearchTagSet from './SearchTagSet'
+  import FilterQuery from '../utils/FilterQuery'
 
   export default {
     name: "SearchField",
-    props: ['query'],
+	props: {
+	  "crewName": {
+	     "type": String,
+	     "default": null
+	  },
+	  "activeFlag": {
+	     "type": String,
+	     "default": "requested"
+	  }
+	},
     components: { UserInput, SearchTagSet },
     data () {
+
       return {
-        "currentQueries": [],
-        "pointer": 0
+        "currentQueries": (this.crewName !== null ? [ new FilterQuery.applyByActive(this.activeFlag) ] : []),
+        "pointer": (this.crewName !== null ? 1 : 0)
       }
+    },
+    created() {
+	this.issueRequest();
     },
     methods: {
       add: function (query) {
@@ -49,6 +63,7 @@
         this.issueRequest()
       },
       issueRequest () {
+	console.log(this.currentQueries)
         var queries = this.currentQueries.slice(0)
         if(queries.length > 0) {
           var query = queries.pop()

@@ -1,6 +1,6 @@
 <template>
   <div class="query-tags">
-    <SearchTag v-for="(f,k) in query.getFields()" :field="f" :key="k" v-on:removeField="handleRemove" />
+    <SearchTag :isVisible="isVisible" v-for="(f,k) in query.getFields()" :field="f" :key="k" v-on:removeField="handleRemove" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@
     components: {
       'SearchTag': SearchTag
     },
-    props: ['query', 'index'],
+    props: ['query', 'index', 'isVisible'],
     methods: {
       handleRemove (event) {
         this.query.removeField(event)

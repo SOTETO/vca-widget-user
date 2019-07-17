@@ -33,6 +33,15 @@
       },
       props: ['query'], // Todo: Do something with that given query!
       data () {
+
+	var propQuery = [];
+	var propPointer = 0;
+	console.log(query);
+	if(typeof query !== "undefined") {
+          propQuery = { query };
+	  propPointer = 1;
+        }
+
         return {
           "keyword": "",
           "currentQueries": [],

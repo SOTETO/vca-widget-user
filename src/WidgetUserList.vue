@@ -6,11 +6,10 @@
     <span v-else>{{ $vcaI18n.t('error.unknown') }}</span>
   </div>
   <div v-else class="user-widget-list">
-    <SearchField v-bind:query="query" v-on:newQuery="setQuery" />
+    <SearchField :activeFlag="activeFlag" :crewName="crewName" v-on:newQuery="setQuery" />
 
-<textarea style="height: 200px">{{ this.options.filter }}</textarea>
-<textarea style="height: 200px">{{ query }}</textarea>
-<textarea style="height: 200px">{{ filter }}</textarea>
+<textarea style="height: 100px">{{ this.options.filter }}</textarea>
+<textarea style="height: 100px">{{ query }}</textarea>
 
     <div class="vca-button-selections">
 	    <!--ActionButton v-bind:query="query" v-on:newQuery="setQuery" /-->
@@ -61,7 +60,7 @@
 
   export default {
     name: 'WidgetUserList',
-    props: ['options', 'filter'],
+    props: ['options', 'crewName', 'activeFlag'],
     components: {
       'ListMenu': ListMenu,
       'TableUsers': TableUsers,
@@ -79,7 +78,7 @@
         users: [],
         page: Page.apply(0, pageParams.sliding, pageParams.size),
         sorting: new Sorting(config.getType(), this.$vcaI18n, config.getSortingInit()),
-        query: (this.options.filter ? this.options.filter : {}),
+        query: { 'query': '', 'values': {} },
 	selectedUsers: [],
         errorState: null
       }

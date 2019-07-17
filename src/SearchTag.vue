@@ -1,10 +1,10 @@
 <template>
-    <div class="searchTag">
+    <div class="searchTag" :class="notRemovable">
       <div class="content">
         <span class="fieldName">{{ getFieldName() }}</span>
         <span class="keyword">{{ getKeyword() }}</span>
       </div>
-      <button class="remove" :title="$vcaI18n.t('label.search.remove.tag')" v-on:click="fireRemove">
+      <button v-if="isVisible" class="remove" :title="$vcaI18n.t('label.search.remove.tag')" v-on:click="fireRemove">
         <div v-html="require('./images/times-circle.svg')" />
       </button>
     </div>
@@ -13,7 +13,12 @@
 <script>
     export default {
       name: "SearchTag",
-      props: ['keywords', 'field'],
+      props: ['keywords', 'field', 'isVisible'],
+      computed: {
+	notRemovable() {
+	  return (this.isVisible ? '' : 'notRemovable');
+        }
+      },
       methods: {
         getKeyword() {
           return this.field.getKeyword()
@@ -89,9 +94,15 @@
     }
 
     &:hover {
+
       box-shadow: #shadow[primary];
       background-color: #colors[primary];
       padding: 0.3em 0.3em 0.3em 0.8em;
+
+    &.notRemovable {
+    background-color: #colors[primaryDeactivated];
+    	padding: 0.3em 0.8em;
+    }
 
       .remove {
         display: block;

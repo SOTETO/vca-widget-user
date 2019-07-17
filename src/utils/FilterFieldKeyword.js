@@ -205,7 +205,7 @@ export default class FilterFieldKeyword {
   }
 
   static getDefaultFields () {
-    return FilterFieldKeyword.Fields.filter(field => field.type === "String" && field.name !== "Supporter_mobilePhone" &&
+    return FilterFieldKeyword.Fields.filter(field => field.type === "String" && field.name !== "Supporter_mobilePhone" && field.name !== "Supporter_Crew_active"  && field.name !== "Supporter_Crew_uuid" 
       field.name !== "Supporter_sex" && field.name !== "Supporter_Crew_role" && field.name !== "User_roles"  && field.name !== "Supporter_Crew_pillar")
   }
 }
@@ -314,6 +314,16 @@ FilterFieldKeyword.Fields = [{
   "name": "Supporter_Crew_name",
   "path": "supporterCrew.name",
   "op": "LIKE",
+  "type": "String"
+}, { // TODO 
+  "name": "Supporter_Crew_uuid",
+  "path": "supporterCrew.uuid",
+  "op": "=",
+  "type": "String"
+}, {
+  "name": "Supporter_Crew_active",
+  "path": "supporterCrew.active",
+  "op": "=",
   "type": "String"
 }, {
   "name": "Supporter_Crew_role",
