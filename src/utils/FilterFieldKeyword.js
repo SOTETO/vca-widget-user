@@ -205,7 +205,7 @@ export default class FilterFieldKeyword {
   }
 
   static getDefaultFields () {
-    return FilterFieldKeyword.Fields.filter(field => field.type === "String" && field.name !== "Supporter_mobilePhone" && field.name !== "Supporter_Crew_active"  && field.name !== "Supporter_Crew_uuid" 
+    return FilterFieldKeyword.Fields.filter(field => field.type === "String" && field.name !== "Supporter_mobilePhone" && field.name !== "Supporter_Crew_active"  && field.name !== "Supporter_Crew_uuid" && 
       field.name !== "Supporter_sex" && field.name !== "Supporter_Crew_role" && field.name !== "User_roles"  && field.name !== "Supporter_Crew_pillar")
   }
 }
