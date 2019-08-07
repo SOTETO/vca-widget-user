@@ -8,9 +8,6 @@
   <div v-else class="user-widget-list">
     <SearchField :activeFlag="activeFlag" :crewName="crewName" v-on:newQuery="setQuery" />
 
-<textarea style="height: 100px">{{ this.options.filter }}</textarea>
-<textarea style="height: 100px">{{ query }}</textarea>
-
     <div class="vca-button-selections">
 	    <!--ActionButton v-bind:query="query" v-on:newQuery="setQuery" /-->
 	    <button v-if="config.hasActionButton('active')" class="vca-button-primary vca-button-selection" v-on:click="setUsersActive()" >

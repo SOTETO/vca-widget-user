@@ -110,6 +110,7 @@
       "User_roles": "Employee?",
       "Supporter_Crew_role": "Crew Manager?",
       "Supporter_Crew_pillar": "Section",
+      "Supporter_Crew_active": "active state",
       "remove": {
         "tag": "Remove query condition"
       },

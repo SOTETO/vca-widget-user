@@ -106,6 +106,7 @@
       "User_roles": "Mitarbeiter?",
       "Supporter_Crew_role": "Crew-ASP?",
       "Supporter_Crew_pillar": "Bereich",
+      "Supporter_Crew_active": "Aktiv-Status",
       "remove": {
         "tag": "Entferne diese Suchbedingung"
       },
