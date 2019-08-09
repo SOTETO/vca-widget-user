@@ -37,9 +37,13 @@
       	var currentQuery = [];
      	var currentPointer = 0;
 
-        console.log('Crewname: ' + this.crewName);
      	if (this.crewName !== null) {
      	    currentQuery.push(new FilterQuery.applyByCrew(this.crewName));
+	    currentPointer++;
+        }
+
+        if (this.activeFlag !== null) {
+            currentQuery.push(new FilterQuery.applyByActive(this.activeFlag));
 	    currentPointer++;
      	}
 
@@ -50,6 +54,22 @@
     },
     created() {
 	this.issueRequest();
+    },
+    watch: {
+        crewName: function(value) {
+            if (value !== null) {
+		this.currentQueries.push(new FilterQuery.applyByCrew(value));
+		this.pointer++;
+                this.issueRequest();
+            }
+        },
+        activeFlag: function(value) {
+            if (value !== null) {
+		this.currentQueries.push(new FilterQuery.applyByActive(value));
+		this.pointer++;
+                this.issueRequest();
+            }
+        }
     },
     methods: {
       add: function (query) {
@@ -73,7 +93,6 @@
         this.issueRequest()
       },
       issueRequest () {
-	console.log(this.currentQueries)
         var queries = this.currentQueries.slice(0)
         if(queries.length > 0) {
           var query = queries.pop()
