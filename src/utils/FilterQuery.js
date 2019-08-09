@@ -162,6 +162,7 @@ export default class FilterQuery {
     var filterQuery = FilterQuery.construct(
        FilterFieldKeyword.Fields.filter(field => field.name === "Supporter_Crew_name"), 
        FilterFieldKeyword.getString(name)
+       // [{ "keyword": name, "masked": name }]
     )
     return filterQuery.inVisible()
   }

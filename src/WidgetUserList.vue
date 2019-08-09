@@ -87,7 +87,7 @@
       this.sorting = new Sorting(this.config.getType(), this.$vcaI18n, this.config.getSortingInit())
 
       this.getCount()
-      this.getPage()
+      //this.getPage()
     },
     mounted() {
 	this.$root.$on('setSelectedUsers', (userList) => { this.setSelectedUsers(userList); })

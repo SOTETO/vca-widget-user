@@ -27,15 +27,25 @@
 	  },
 	  "activeFlag": {
 	     "type": String,
-	     "default": "requested"
+	     "default": null
 	  }
 	},
     components: { UserInput, SearchTagSet },
     data () {
 
+
+      	var currentQuery = [];
+     	var currentPointer = 0;
+
+        console.log('Crewname: ' + this.crewName);
+     	if (this.crewName !== null) {
+     	    currentQuery.push(new FilterQuery.applyByCrew(this.crewName));
+	    currentPointer++;
+     	}
+
       return {
-        "currentQueries": (this.crewName !== null ? [ new FilterQuery.applyByActive(this.activeFlag) ] : []),
-        "pointer": (this.crewName !== null ? 1 : 0)
+        "currentQueries": currentQuery,
+        "pointer": currentPointer
       }
     },
     created() {
