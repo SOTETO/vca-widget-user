@@ -6,9 +6,108 @@
 
 ## Preconditions
 Using this package requires a running version of [Drops](https://github.com/Viva-con-Agua/drops), that has already 
-implemented [issue #225](https://github.com/Viva-con-Agua/drops/issues/225). Additionally, the web server has to use the 
-same domain and the same port to take requests for [Drops](https://github.com/Viva-con-Agua/drops) (using the path prefix 
-`/drops/`) and the front end application you want to use this plugin for.
+implemented [issue #225](https://github.com/Viva-con-Agua/drops/issues/225). Additionally, the web server you are using
+to run the front end application using this widget, has to use the same domain and the same port as 
+[Drops](https://github.com/Viva-con-Agua/drops). [Drops](https://github.com/Viva-con-Agua/drops) has to be deployed 
+using the path prefix `/drops/`.
+
+## Widgets
+This package implements several UI elements to handle user-specific interaction with the business objects `User` and 
+`Crew` of the Pool² (e.g. input fields to search for a user or HTML and CSS code to present a user in a standard way). 
+Using the widgets implemented here, you can ensure that users of your microservice will have the same user experience 
+regarding other users as using the other microservices of Pool².
+
+### Plain crew name
+Since microservices should be loosely coupled, ideally they only save references to data objects managed by other 
+microservices. Therefore, you need widgets to print a data object, if you only have a reference. 
+
+This widget prints a crew name by a given crews `UUID`.
+
+![](./src/images/screenshot_crew_plain_name.png)
+
+You can use it that way:
+```xml
+<CrewPlainName id="606693fe-c057-4f05-8b29-2cc4975dda82" />
+```
+Since it has been implemented as a simple `<span>` tag without any styling, you can define the font and background color
+as you want.
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `id` | String | required | *No default value* | The crews `UUID`. It will be used for an ajax request to obtain the crew object. |
+
+*There are no slots for this widget*
+
+*There are no events of this widget*
+
+### Crew select
+It allows the user to select a crew. The widget fires an event after selection that returns the `UUID` of the selected 
+crew.
+
+![](./src/images/screenshot_crew_select.png)
+
+You can use it that way (`crewUuid` and `handler` are example names for variable and function):
+```xml
+<CrewSelect value="crewUuid" :disabled="false" v-on:input="handler" />
+```
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `value` | String | optional | `""` | The `UUID` of the crew selected by default (e.g. a previously selected value). |
+| `disabled` | Boolean | optional | `false` | Indicates if the select box is disabled. |
+
+*There are no slots for this widget* 
+
+| Event | Data |
+|-------|------|
+| `input` | The `UUID` of the selected crew. |
+
+### Tag
+Using this widget, you can show user or crew names as small (removable) tags. On click, the user will be redirected to 
+the profile page of the user that is represented by the tag. 
+
+![](./src/images/screenshot_tag_user.png) 
+![](./src/images/screenshot_tag_crew.png)
+
+You can use it that way:
+```xml
+<Tag uuid="606693fe-c057-4f05-8b29-2cc4975dda82" :removable="false" :crew="false" />
+```
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `uuid` | String | optional | *No default value* | The `UUID` of the user whose name has to be printed. |
+| `user` | Object | optional | *No default value* | The whole user object, thus an additional ajax request (in contrast to the parameter `uuid`) is not required. |
+| `removable` | Boolean | optional | `false` | Indicates if the "X" button has to be visible. |
+| `crew` | Boolean | optional | `false` | If set to `true` the name of the users crew instead of the individuals name is been used.  |
+
+*There are no slots for this widget*
+
+| Event | Data |
+|-------|------|
+| `vca-user-remove` | The `object` representing the removed user. |
+| `vca-user-focus` | The `object` representing the focused user. |
+| `vca-user-blur` | The `object` representing the blurred user. | 
+
+### Avatar
+Shows the avatar (profile image) of a user.
+
+![](./src/images/screenshot_avatar_big.png)
+![](./src/images/screenshot_avatar_small.png)
+
+You can use it that way:
+```xml
+<Avatar :user="user" type="type" />
+```
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `user` | Object | optional | *No default value* | The whole user object. |
+| `type` | String | required | - | The `type` can be `'medium'` (4em x 4em), `'large'` (10em x 10em) or `'profile'` (20em x 20em). |
+
+*There are no slots for this widget*
+
+*There are no events of this widget*
 
 ## Installation
 
