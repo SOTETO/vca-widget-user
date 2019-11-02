@@ -178,6 +178,9 @@ You can use it that way:
 *There are no events of this widget*
 
 ### User Widget Autocomplete
+Allows to select a list of users by an autocomplete field.
+
+![](./src/images/screenshot_autocomplete.png)
 
 You can use it that way:
 ```xml
