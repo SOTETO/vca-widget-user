@@ -109,6 +109,92 @@ You can use it that way:
 
 *There are no events of this widget*
 
+### VcA Role
+Shows the role of a user as a tag.
+
+![](./src/images/screenshot_role.png)
+
+You can use it that way:
+```xml
+<VcARole name="VolunteerManager" pillar="network" />
+```
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `name` | String | optional | *No default value* | The name of the role that will be shown. Possible values: `admin`, `employee`, `supporter`, `VolunteerManager` |
+| `pillar` | String | optional | *No default value* | If the role to be shown is a volunteer manager, the area of responsibility can be described here. Possible values: `network`, `operation`, `finance`, `education` |
+| `translated` | String | optional | *No default value* | If you already have a translated string, you can force the `VcARole` to use it by passing it through this attribute. |
+
+*There are no slots for this widget*
+
+*There are no events of this widget*
+
+### User Widget
+
+Visualizes a user in various forms.
+
+
+![](./src/images/screenshot_big_widget.png)
+![](./src/images/screenshot_small_widget.png)
+![](./src/images/screenshot_tag.png)
+
+You can use it that way:
+```xml
+<UserWidget uuid="13e42965-cd78-459a-97e0-35a91c01ab4d" type="large" />
+```
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `uuid` | UUID | optional | *No default value* | If given, the printed user will be requested from Drops when the widget is created by an ajax request. |
+| `user` | Object | optional | *No default value* | If given, the object will be interpreted as complete user that will be printed. No additional ajax requests are required. |
+| `type` | String | required | - | Indicates the form of presentation. There are three different forms (and thus are the values of the attribute): `small`, `medium` and `large` |
+| `removable` | Boolean | optional | `false` | If the `type` is set to `small` and `removable` is `true`, a small button labeled with "X" will be shown at the right border of the widget. A click triggers a `vca-user-remove` event. |
+
+*There are no slots for this widget*
+
+| Event | Data |
+|-------|------|
+| `vca-user-remove` | The `object` representing the removed user. |
+| `vca-user-focus` | The `object` representing the focused user. |
+| `vca-user-blur` | The `object` representing the blurred user. | 
+
+### User Widget List
+Shows a set of users and implements functions to search through, sort and paginate the set. There are four different forms
+of visualizing the set: as large [user widget](user-widget), as medium [user widget](user-widget), as small [user widget](user-widget) and as table columns. 
+
+![](./src/images/screenshot_user_list.png)
+
+You can use it that way:
+```xml
+<WidgetUserList :options="{ lang: 'de-DE', type: { menue: true, value: 'table' }, sorting: { menue: { field: 'Supporter_firstName', dir: 'ASC' } }, pagination: { activated: true, size: 40, sliding: 20 } }" />
+```
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `options` | Object | optional | *See example* | Configures the widget. Consider: `type: menue` indicates if sort and search function have to be visible, `type: value` configures the visualization of users (allowed values: `table`, `big widgets` (large [user widget](user-widget)), `small widgets` (medium [user widget](user-widget)), `tags` (small [user widget](user-widget))), `sorting: menue: field` allows all attributes of a user, `pagination: size` defines the number of users shown on a page and `pagination: sliding` defines the number of users that are removed at the beginning of a page and appended at the end of page on a page switch. |
+
+*There are no slots for this widget*
+
+*There are no events of this widget*
+
+### User Widget Autocomplete
+
+You can use it that way:
+```xml
+<WidgetUserAutocomplete placeholder="Enter user name..." />
+```
+
+| Parameter | Type | Optional | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `placeholder` | String | optional | *No default value* | The placeholder for the input field. |
+| `preselection` | Array of user objects | optional | `[]` | Used to pass all already selected users. They will be shown as removable tags. |
+
+*There are no slots for this widget*
+
+| Event | Data |
+|-------|------|
+| `vca-user-selection` | An `Array` of selected user objects. |
+
 ## Installation
 
 ```bash
