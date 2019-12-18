@@ -33,8 +33,8 @@
           :pillar="role.pillar.pillar"
           :key="role.name + '.' + role.crew.name + '.' + role.pillar.pillar"
         />
-        <VcARole v-if="isActive()" :translated="$vcaI18n.t('value.supporter.active')"/>
-        <VcARole v-if="isNVM()" :translated="$vcaI18n.t('value.supporter.nvm')"/>
+        <VcARole v-if="isActive()" :translated="$vcaI18n.t('value.supporter.active')" :additionalClass="associationRole()"/>
+        <VcARole v-if="isNVM()" :translated="$vcaI18n.t('value.supporter.nvm')" :additionalClass="associationRole()"/>
       </div>
     </td>
     <td class="email noPhone" v-on:click="callLink()">{{ user.profiles[0].email }}</td>
@@ -67,6 +67,9 @@
 	  }
 
 	},
+        associationRole: function() {
+          return 'activeRole nvmRole';
+        },
         getClass: function () {
           return this.type + ' ' + this.className
         },
@@ -175,6 +178,10 @@
       .colorProfilePrimary();
       font-weight: bold;
     }
+  }
+
+  .activeRole, .nvmRole {
+     background-color: rgba(10, 107, 145, 0.4) !important;
   }
 
   .roles {

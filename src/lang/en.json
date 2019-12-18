@@ -20,7 +20,16 @@
     "roles": {
       "admin": "Admin",
       "employee": "Employee",
-      "supporter": "Supporter"
+      "supporter": "Supporter",
+      "vcade": "VcA DE",
+      "vcaat": "VcA AT",
+      "vcach": "VcA CH",
+      "vcaza": "VcA ZA",
+      "vcaca": "VcA CA",
+      "goldeimer": "Goldeimer",
+      "millgall": "VcA Arts",
+      "stiftung": "VcA Foundation",
+      "wassergmbh": "VcA Water GmbH"
     },
     "age": {
       "notAvailable": "n/a"

@@ -20,7 +20,16 @@
     "roles": {
       "admin": "Admin",
       "employee": "Hauptamt",
-      "supporter": "Supporter"
+      "supporter": "Supporter",
+      "vcade": "VcA DE",
+      "vcaat": "VcA AT",
+      "vcach": "VcA CH",
+      "vcaza": "VcA ZA",
+      "vcaca": "VcA CA",
+      "goldeimer": "Goldeimer",
+      "millgall": "VcA Arts",
+      "stiftung": "VcA Stiftung",
+      "wassergmbh": "VcA Wasser GmbH"
     },
     "age": {
       "notAvailable": "n.a."
@@ -59,8 +68,8 @@
     },
     "active": {
 	"button": {
-		"confirm": "Aktivitätsanfrage<br/>bestätigen",
-		"decline": "Aktivitätsanfrage<br/>ablehnen"
+		"confirm": "Aktivitätsanfrage bestätigen",
+		"decline": "Aktivitätsanfrage ablehnen"
 	},
 	"messages": {
 		"confirm": "Willst du die Aktivitätsanfragen für die ausgewählten Supporter annehmen?",
