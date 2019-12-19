@@ -5,6 +5,7 @@ import merge from 'deepmerge';
 export default class FilterQuery {
 
   constructor (fieldLists, concatOperations = []) {
+    this.visible = true
     this.status = "error"
     this.fieldLists = fieldLists
     this.concatOperations = concatOperations
@@ -13,6 +14,15 @@ export default class FilterQuery {
     }
     this.query = this.getResult()
     this.status = "success"
+  }
+
+  inVisible() {
+    this.visible = false
+    return this
+  }
+
+  isVisible() {
+    return this.visible
   }
 
   isEmpty() {
@@ -146,6 +156,23 @@ export default class FilterQuery {
     var query = queries.pop()
     query = queries.reduce((acc, current) => acc.or(current), query)
     return query
+  }
+
+  static applyByCrew(name) {
+    var filterQuery = FilterQuery.construct(
+       FilterFieldKeyword.Fields.filter(field => field.name === "Supporter_Crew_name"), 
+       FilterFieldKeyword.getString(name)
+       // [{ "keyword": name, "masked": name }]
+    )
+    return filterQuery.inVisible()
+  }
+
+  static applyByActive(value) {
+    var filterQuery = FilterQuery.construct(
+       FilterFieldKeyword.Fields.filter(field => field.name === "Supporter_Crew_active"), 
+       [{ "keyword": value, "masked": value }]
+    )
+    return filterQuery.inVisible()
   }
 
   static construct (fieldSet, maskedKeywords) {

@@ -1,9 +1,14 @@
 {
   "error": {
+    "title": "Fehler",
     "notFound": "Nichts gefunden",
     "notAuthenticated": "Nicht eingeloggt",
     "forbidden": "Keine Berechtigung",
     "unknown": "Ein unbekannter Fehler ist aufgetreten"
+  },
+  "success": {
+    "title": "Erfolg",
+    "msg": "Deine Anfrage wurde erfolgreich verarbeitet"
   },
   "value": {
     "gender": {
@@ -15,10 +20,23 @@
     "roles": {
       "admin": "Admin",
       "employee": "Hauptamt",
-      "supporter": "Supporter"
+      "supporter": "Supporter",
+      "vcade": "VcA DE",
+      "vcaat": "VcA AT",
+      "vcach": "VcA CH",
+      "vcaza": "VcA ZA",
+      "vcaca": "VcA CA",
+      "goldeimer": "Goldeimer",
+      "millgall": "VcA Arts",
+      "stiftung": "VcA Stiftung",
+      "wassergmbh": "VcA Wasser GmbH"
     },
     "age": {
       "notAvailable": "n.a."
+    },
+    "supporter": {
+      "active": "aktiv",
+      "nvm": "stimmrechtsloses Mitglied"
     }
   },
   "label": {
@@ -47,6 +65,16 @@
         "age" : "Alter",
         "gender" : "Geschlecht"
       }
+    },
+    "active": {
+	"button": {
+		"confirm": "Aktivitätsanfrage bestätigen",
+		"decline": "Aktivitätsanfrage ablehnen"
+	},
+	"messages": {
+		"confirm": "Willst du die Aktivitätsanfragen für die ausgewählten Supporter annehmen?",
+		"decline": "Willst du die Aktivitätsanfragen für die ausgewählten Supporter ablehnen?"
+	}
     },
     "typeSelection": {
       "large": "Große Widgets",
@@ -87,6 +115,7 @@
       "User_roles": "Mitarbeiter?",
       "Supporter_Crew_role": "Crew-ASP?",
       "Supporter_Crew_pillar": "Bereich",
+      "Supporter_Crew_active": "Aktiv-Status",
       "remove": {
         "tag": "Entferne diese Suchbedingung"
       },

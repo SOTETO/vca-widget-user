@@ -1,9 +1,14 @@
 {
   "error": {
+    "title": "Error",
     "notFound": "Not Found",
     "notAuthenticated": "Not Authenticated",
     "forbidden": "Forbidden",
     "unknown": "An unknown error occurred"
+  },
+  "success": {
+    "title": "Success",
+    "msg": "Your request has been successfully processed"
   },
   "value": {
     "gender": {
@@ -15,10 +20,23 @@
     "roles": {
       "admin": "Admin",
       "employee": "Employee",
-      "supporter": "Supporter"
+      "supporter": "Supporter",
+      "vcade": "VcA DE",
+      "vcaat": "VcA AT",
+      "vcach": "VcA CH",
+      "vcaza": "VcA ZA",
+      "vcaca": "VcA CA",
+      "goldeimer": "Goldeimer",
+      "millgall": "VcA Arts",
+      "stiftung": "VcA Foundation",
+      "wassergmbh": "VcA Water GmbH"
     },
     "age": {
       "notAvailable": "n/a"
+    },
+    "supporter": {
+      "active": "active",
+      "nvm": "non-voting member"
     }
   },
   "label": {
@@ -47,6 +65,20 @@
         "age" : "Age",
         "gender" : "Gender"
       }
+    },
+    "active": {
+	"button": {
+		"confirm": "Confirm activity",
+		"decline": "Decline activity"
+	},
+	"messages": {
+		"confirm": "Do you want to confirm the active requests for the selected users?",
+		"decline": "Do you want to decline the active requests for the selected users?"
+	},
+	"response": {
+		"success": "Do you want to confirm the active requests for the selected users?",
+		"error": "Do you want to decline the active requests for the selected users?"
+	}
     },
     "typeSelection": {
       "large": "Big Widgets",
@@ -87,6 +119,7 @@
       "User_roles": "Employee?",
       "Supporter_Crew_role": "Crew Manager?",
       "Supporter_Crew_pillar": "Section",
+      "Supporter_Crew_active": "active state",
       "remove": {
         "tag": "Remove query condition"
       },

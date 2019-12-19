@@ -16,15 +16,60 @@
 <script>
   import UserInput from './UserInput'
   import SearchTagSet from './SearchTagSet'
+  import FilterQuery from '../utils/FilterQuery'
 
   export default {
     name: "SearchField",
+	props: {
+	  "crewName": {
+	     "type": String,
+	     "default": null
+	  },
+	  "activeFlag": {
+	     "type": String,
+	     "default": null
+	  }
+	},
     components: { UserInput, SearchTagSet },
     data () {
+
+
+      	var currentQuery = [];
+     	var currentPointer = 0;
+
+     	if (this.crewName !== null) {
+     	    currentQuery.push(new FilterQuery.applyByCrew(this.crewName));
+	    currentPointer++;
+        }
+
+        if (this.activeFlag !== null) {
+            currentQuery.push(new FilterQuery.applyByActive(this.activeFlag));
+	    currentPointer++;
+     	}
+
       return {
-        "currentQueries": [],
-        "pointer": 0
+        "currentQueries": currentQuery,
+        "pointer": currentPointer
       }
+    },
+    created() {
+	this.issueRequest();
+    },
+    watch: {
+        crewName: function(value) {
+            if (value !== null) {
+		this.currentQueries.push(new FilterQuery.applyByCrew(value));
+		this.pointer++;
+                this.issueRequest();
+            }
+        },
+        activeFlag: function(value) {
+            if (value !== null) {
+		this.currentQueries.push(new FilterQuery.applyByActive(value));
+		this.pointer++;
+                this.issueRequest();
+            }
+        }
     },
     methods: {
       add: function (query) {

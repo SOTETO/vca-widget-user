@@ -6,7 +6,17 @@
     <span v-else>{{ $vcaI18n.t('error.unknown') }}</span>
   </div>
   <div v-else class="user-widget-list">
-    <SearchField v-bind:query="query" v-on:newQuery="setQuery" />
+    <SearchField :activeFlag="activeFlag" :crewName="crewName" v-on:newQuery="setQuery" />
+
+    <div class="vca-button-selections">
+	    <!--ActionButton v-bind:query="query" v-on:newQuery="setQuery" /-->
+	    <button v-if="config.hasActionButton('active')" class="vca-button-primary vca-button-selection" v-on:click="setUsersActive()" >
+	      {{ $vcaI18n.t('label.active.button.confirm') }}
+	    </button>    
+	    <button v-if="config.hasActionButton('active')" class="vca-button-primary vca-button-selection" v-on:click="setUsersInActive()" >
+	      {{ $vcaI18n.t('label.active.button.decline') }}
+	    </button>
+    </div>
     <ListMenu v-bind:type="type"
               v-bind:sorting="sorting"
               v-on:typeSelect="setType"
@@ -19,7 +29,7 @@
       {{ $vcaI18n.tc('label.pagination.button.previous', page.howManyPrevious(), { 'number': page.howManyPrevious() }) }}
     </button>
     <WidgetUsers v-if="type !== 'tableRow'" :users="users" :type="type" />
-    <TableUsers v-else :users="users" />
+    <TableUsers v-else :users="users" :showOptions="config.hasActionButtons()" />
     <button v-if="config.hasPagination() && page.hasNext()" v-on:click="addPage" class="paginate">
       {{ $vcaI18n.tc('label.pagination.button.next', page.howManyNext(), { 'number': page.howManyNext() }) }}
     </button>
@@ -37,10 +47,17 @@
   import TableUsers from './TableUsers'
   import WidgetUsers from './WidgetUsers'
   import SearchField from './SearchField/SearchField'
+  import {
+    Notification,
+    Button
+  } from 'element-ui'
+  Vue.use(Notification);
+  Vue.use(Button);
+  Notification.closeAll();
 
   export default {
     name: 'WidgetUserList',
-    props: ['options'],
+    props: ['options', 'crewName', 'activeFlag'],
     components: {
       'ListMenu': ListMenu,
       'TableUsers': TableUsers,
@@ -59,6 +76,7 @@
         page: Page.apply(0, pageParams.sliding, pageParams.size),
         sorting: new Sorting(config.getType(), this.$vcaI18n, config.getSortingInit()),
         query: { 'query': '', 'values': {} },
+	selectedUsers: [],
         errorState: null
       }
     },
@@ -69,9 +87,53 @@
       this.sorting = new Sorting(this.config.getType(), this.$vcaI18n, this.config.getSortingInit())
 
       this.getCount()
-      this.getPage()
+      //this.getPage()
+    },
+    mounted() {
+	this.$root.$on('setSelectedUsers', (userList) => { this.setSelectedUsers(userList); })
     },
     methods: {
+      setUsersActive: function() {
+	if (!confirm(this.$t('label.active.messages.confirm'))) {
+		return false;
+	}
+        let request = { users: this.selectedUsers };
+	this.submit('/drops/widgets/users/active', request);
+      },
+      setUsersInActive: function() {
+	if (!confirm(this.$t('label.active.messages.decline'))) {
+		return false;
+	}
+        let request = { users: this.selectedUsers };
+	this.submit('/drops/widgets/users/inactive', request);
+      },
+      submit(url, data) {
+
+	axios
+	  .post(url, data)
+	  .then(response => {
+		switch (response.status) {
+			case 200:
+				this.open(
+	  				this.$t('success.title'),
+	  				this.$t('success.msg'),
+	  				"success"
+				)
+                                window.location.reload();
+			break;
+		}
+	}).catch(error => {
+	    this.selection = this.default
+	    this.open(
+		this.$t('error.title'),
+		this.$t('error.unknown'),
+		"error"
+	    )
+	})
+      },
+      setSelectedUsers: function (userList) {
+	this.selectedUsers = userList;
+      },
       addPage: function (event) {
         if (this.page.hasNext()) {
           this.page = this.page.next()
@@ -144,6 +206,13 @@
       },
       hasError () {
         return this.errorState !== null && (typeof this.errorState !== 'undefined')
+      },
+      open(title, message, type) {
+        Notification({
+            title:  title,
+            message: message,
+            type: type
+        });
       }
     }
   }
@@ -176,6 +245,14 @@
       text-decoration: none;
       color: #colors[primary];
     }
+  }
+
+  .vca-button-selections {
+	margin-top: 0.5em;
+  }
+
+  .vca-button-selection {
+	width: 200px;
   }
 
   .paginate {

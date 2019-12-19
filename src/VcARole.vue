@@ -1,5 +1,5 @@
 <template>
-    <span class="role">
+    <span :class="['role', additionalClass ]">
         {{ getTitle() }}
     </span>
 </template>
@@ -7,7 +7,7 @@
 <script>
     export default {
       name: "VcARole",
-      props: ['name', 'pillar', 'translated'],
+      props: ['name', 'pillar', 'translated', 'additionalClass'],
       methods: {
           getTitle() {
             var title = ""
@@ -19,6 +19,9 @@
               title = this.$vcaI18n.t('value.roles.' + this.name)
             }
             return title
+          },
+          getAdditionalClass() {
+              return this.additionalClass
           }
       }
     }

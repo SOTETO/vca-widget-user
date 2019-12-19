@@ -21,6 +21,11 @@ export default class Config {
       this.sorting = options.sorting
     }
 
+    this.buttons = Config.default.buttons
+    if(options !== null && (typeof options !== "undefined") && options.hasOwnProperty("buttons")) {
+      this.buttons = options.buttons
+    }
+
     this.filter = {}
     if(options !== null && (typeof options !== "undefined") && options.hasOwnProperty("filter")) {
       this.filter = options.filter
@@ -29,11 +34,22 @@ export default class Config {
 
   hasMenue() {
     return this.hasTypeSelect() || this.hasSortingSelect() || this.hasSortingDirButton()
+  }
 
+  hasActionButton(type) {
+    return this.buttons.includes(type)
+  }
+
+  hasActionButtons() {
+    return (this.buttons.length > 0)
   }
 
   hasTypeSelect() {
     return this.type.hasOwnProperty("menue") && this.type.menue
+  }
+
+  getFilter() {
+    return this.filter
   }
 
   hasSortingSelect() {
@@ -93,6 +109,8 @@ Config.default = {
       "dir": "ASC"
     }
   },
+  "filter": {},
+  "buttons": [],
   "pagination": {
     "activated": true,
     "size": 40,

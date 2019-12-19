@@ -3,7 +3,7 @@
     <div class="tags" ref="tags" :style="'width: ' + tagsWidth + 'px'">
       <template v-for="(q,k) in queries">
         <div ref="tagQueries" class="tagQueries">
-          <SearchTagQuery :query="q" :index="k" :key="k" v-on:changeQuery="updateFilter" />
+          <SearchTagQuery :isVisible="q.isVisible()" :query="q" :index="k" :key="k" v-on:changeQuery="updateFilter" />
           <div v-if="k !== (queries.length - 1)" class="divider" v-html="require('../images/plus.svg')" />
         </div>
       </template>
