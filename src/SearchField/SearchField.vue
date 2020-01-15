@@ -97,7 +97,6 @@
         if(queries.length > 0) {
           var query = queries.pop()
           query = queries.reduce((acc, current) => acc.and(current), query)
-
           var res = {'state': 'error'}
           if (typeof query !== "undefined") {
             res = query.getQuery()

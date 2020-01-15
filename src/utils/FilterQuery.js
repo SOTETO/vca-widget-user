@@ -160,9 +160,8 @@ export default class FilterQuery {
 
   static applyByCrew(name) {
     var filterQuery = FilterQuery.construct(
-       FilterFieldKeyword.Fields.filter(field => field.name === "Supporter_Crew_name"), 
-       FilterFieldKeyword.getString(name)
-       // [{ "keyword": name, "masked": name }]
+       FilterFieldKeyword.Fields.filter(field => field.name === "Supporter_Crew_name"),
+       [{ "keyword": name, "masked": name }]
     )
     return filterQuery.inVisible()
   }
