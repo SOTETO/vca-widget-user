@@ -20,7 +20,7 @@
     <td class="name" v-on:click="callLink()">
       <a :href="getURL()" ref="profileLink">{{ user.profiles[0].supporter.fullName }}</a>
       <div class="roles">
-        <VcARole v-for="role in user.roles.filter((r) => r.role !== 'supporter')" :name="role.role" :key="role.role" />
+        <VcARole :additionalClass="operatingRole()" v-for="role in user.roles.filter((r) => r.role !== 'supporter')" :name="role.role" :key="role.role" />
       </div>
     </td>
     <td class="since" v-on:click="callLink()">{{ getSince() }}</td>
@@ -69,6 +69,9 @@
 	},
         associationRole: function() {
           return 'activeRole nvmRole';
+        },
+        operatingRole: function() {
+          return 'admin employee'
         },
         getClass: function () {
           return this.type + ' ' + this.className
@@ -182,6 +185,11 @@
 
   .activeRole, .nvmRole {
      background-color: rgba(10, 107, 145, 0.4) !important;
+  }
+
+  .admin, .employee {
+    font-weight: bold;
+    background-color: rgba(107, 145, 10, 0.6) !important;
   }
 
   .roles {

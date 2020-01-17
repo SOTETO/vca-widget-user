@@ -37,7 +37,9 @@ export default class Config {
   }
 
   hasActionButton(type) {
-    return this.buttons.includes(type)
+    return this.buttons.filter(button => {
+              return (type === button.label)
+           })
   }
 
   hasActionButtons() {

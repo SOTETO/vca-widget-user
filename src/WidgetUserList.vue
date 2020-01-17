@@ -9,13 +9,9 @@
     <SearchField :activeFlag="activeFlag" :crewName="crewName" v-on:newQuery="setQuery" />
 
     <div class="vca-button-selections">
-	    <!--ActionButton v-bind:query="query" v-on:newQuery="setQuery" /-->
-	    <button v-if="config.hasActionButton('active')" class="vca-button-primary vca-button-selection" v-on:click="setUsersActive()" >
-	      {{ $vcaI18n.t('label.active.button.confirm') }}
-	    </button>    
-	    <button v-if="config.hasActionButton('active')" class="vca-button-primary vca-button-selection" v-on:click="setUsersInActive()" >
-	      {{ $vcaI18n.t('label.active.button.decline') }}
-	    </button>
+            <button v-if="config.hasActionButtons()" class="vca-button-margin vca-button-primary vca-button-selection" v-for="button in config.buttons" @click="emitClick(button.callback)">
+                {{ button.label }}
+            </button>
     </div>
     <ListMenu v-bind:type="type"
               v-bind:sorting="sorting"
@@ -93,19 +89,8 @@
 	this.$root.$on('setSelectedUsers', (userList) => { this.setSelectedUsers(userList); })
     },
     methods: {
-      setUsersActive: function() {
-	if (!confirm(this.$t('label.active.messages.confirm'))) {
-		return false;
-	}
-        let request = { users: this.selectedUsers };
-	this.submit('/drops/widgets/users/active', request);
-      },
-      setUsersInActive: function() {
-	if (!confirm(this.$t('label.active.messages.decline'))) {
-		return false;
-	}
-        let request = { users: this.selectedUsers };
-	this.submit('/drops/widgets/users/inactive', request);
+      emitClick(callback) {
+        this.$emit(callback, { 'callback': callback, 'users': this.selectedUsers })
       },
       submit(url, data) {
 
@@ -253,6 +238,10 @@
 
   .vca-button-selection {
 	width: 200px;
+  }
+
+  .vca-button-margin {
+    margin-right: 5px;
   }
 
   .paginate {
