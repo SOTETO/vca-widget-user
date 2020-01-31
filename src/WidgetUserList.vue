@@ -9,17 +9,17 @@
     <SearchField :activeFlag="activeFlag" :crewName="crewName" v-on:newQuery="setQuery" />
 
     <div class="vca-button-selections">
-            <button v-if="config.hasActionButtons()" class="vca-button-margin vca-button-primary vca-button-selection" v-for="button in config.buttons" @click="emitClick(button.callback)">
-                {{ button.label }}
-            </button>
+      <button v-if="config.hasActionButtons()" class="vca-button-margin vca-button-primary vca-button-selection" v-for="button in config.buttons" @click="emitClick(button.callback)">
+        {{ button.label }}
+      </button>
     </div>
     <ListMenu v-bind:type="type"
-              v-bind:sorting="sorting"
-              v-on:typeSelect="setType"
-              v-on:sortDirSelect="setSortingDir"
-              v-on:sortFieldSelect="setSortingField"
-              v-if="config.hasMenue()"
-              v-bind:config="config"
+    v-bind:sorting="sorting"
+    v-on:typeSelect="setType"
+    v-on:sortDirSelect="setSortingDir"
+    v-on:sortFieldSelect="setSortingField"
+    v-if="config.hasMenue()"
+    v-bind:config="config"
     />
     <button v-if="config.hasPagination() && page.hasPrevious()" v-on:click="removePage" class="paginate">
       {{ $vcaI18n.tc('label.pagination.button.previous', page.howManyPrevious(), { 'number': page.howManyPrevious() }) }}
@@ -53,7 +53,7 @@
 
   export default {
     name: 'WidgetUserList',
-    props: ['options', 'crewName', 'activeFlag'],
+    props: ['options', 'activeFlag'],
     components: {
       'ListMenu': ListMenu,
       'TableUsers': TableUsers,
@@ -61,7 +61,6 @@
       'SearchField': SearchField
     },
     data () {
-
       var config = new Config(this.options)
       var pageParams = config.getPage()
 
@@ -72,8 +71,9 @@
         page: Page.apply(0, pageParams.sliding, pageParams.size),
         sorting: new Sorting(config.getType(), this.$vcaI18n, config.getSortingInit()),
         query: { 'query': '', 'values': {} },
-	selectedUsers: [],
-        errorState: null
+        selectedUsers: [],
+        errorState: null,
+        crewName: null
       }
     },
     created () {
@@ -81,126 +81,138 @@
       Vue.config.lang = lang
       this.$vcaI18n.locale = lang
       this.sorting = new Sorting(this.config.getType(), this.$vcaI18n, this.config.getSortingInit())
-
-      this.getCount()
-      //this.getPage()
+      axios.get('/drops/webapp/identity').then((response) => {
+        if (response.status === 200) {
+          // Check if admin or employee, then show full list of active requested users
+          var userRoles = response.data.additional_information.roles.map((role) => role.role)
+          if (!userRoles.includes('employee') && !userRoles.includes('admin')) {
+            this.crewName = response.data.additional_information.profiles[0].supporter.crew.name;
+          } else {
+            this.getCount()
+            this.getPage()
+          }
+        }
+      })
     },
     mounted() {
-	this.$root.$on('setSelectedUsers', (userList) => { this.setSelectedUsers(userList); })
+      this.$root.$on('setSelectedUsers', (userList) => { this.setSelectedUsers(userList); })
     },
     methods: {
       emitClick(callback) {
         this.$emit(callback, { 'callback': callback, 'users': this.selectedUsers })
       },
       submit(url, data) {
-
-	axios
-	  .post(url, data)
-	  .then(response => {
-		switch (response.status) {
-			case 200:
-				this.open(
-	  				this.$t('success.title'),
-	  				this.$t('success.msg'),
-	  				"success"
-				)
-                                window.location.reload();
-			break;
-		}
-	}).catch(error => {
-	    this.selection = this.default
-	    this.open(
-		this.$t('error.title'),
-		this.$t('error.unknown'),
-		"error"
-	    )
-	})
-      },
-      setSelectedUsers: function (userList) {
-	this.selectedUsers = userList;
-      },
-      addPage: function (event) {
-        if (this.page.hasNext()) {
-          this.page = this.page.next()
-          this.getPage()
-        }
-      },
-      removePage: function (event) {
-        if (this.page.hasPrevious()) {
-          this.page = this.page.previous()
-          this.getPage()
-        }
-      },
-      getPage: function () {
-        var request = {
-          'values': this.query.values,
-          'sort': this.sorting.toJSONRequest(),
-          'limit': this.page.getSize(),
-          'offset': this.page.getOffset()
-        }
-        if(this.query.query !== null && (typeof this.query.query !== "undefined") && this.query.query !== "") {
-          request['query'] = this.query.query
-        }
-        axios.post('/drops/widgets/users', request)
-              .then(response => {
-                switch (response.status) {
-                  case 200:
-                    this.users = response.data.additional_information
-                    break
-                }
-              }).catch(error => {
-                this.errorState = error.response.status
-              })
-      },
-      getCount: function() {
-        var request = {
-          'values': this.query.values
-        }
-        if(this.query.query !== null && (typeof this.query.query !== "undefined") && this.query.query !== "") {
-          request['query'] = this.query.query
-        }
-        axios.post('/drops/widgets/users/count', request)
-          .then(response => {
-          switch (response.status) {
-            case 200:
-              this.page = Page.apply(response.data.additional_information.count, this.config.getPage().sliding, this.config.getPage().size)
-              break
-        }
-        }).catch(error => {
-            this.errorState = error.response.status
-        })
-      },
-      setType: function (event) {
-        this.type = event
-        this.sorting.setType(this.type)
-      },
-      setSortingDir: function (event) {
-        this.sorting.setDir(event)
-        this.getPage()
-      },
-      setSortingField: function (event) {
-        this.sorting.setField(event)
-        this.getPage()
-      },
-      setQuery: function(event) {
-        if(event.state === "success") {
-          this.query = event
-          this.getCount()
-          this.getPage()
-        }
-      },
-      hasError () {
-        return this.errorState !== null && (typeof this.errorState !== 'undefined')
-      },
-      open(title, message, type) {
-        Notification({
-            title:  title,
-            message: message,
-            type: type
-        });
-      }
+        axios
+       .post(url, data)
+       .then(response => {
+        switch (response.status) {
+         case 200:
+         this.open(
+           this.$t('success.title'),
+           this.$t('success.msg'),
+           "success"
+           )
+         window.location.reload();
+         break;
+       }
+     }).catch(error => {
+       this.selection = this.default
+       this.open(
+        this.$t('error.title'),
+        this.$t('error.unknown'),
+        "error"
+        )
+     })
+   },
+   setSelectedUsers: function (userList) {
+     this.selectedUsers = userList;
+   },
+   addPage: function (event) {
+    if (this.page.hasNext()) {
+      this.page = this.page.next()
+      this.getPage()
     }
+  },
+  removePage: function (event) {
+    if (this.page.hasPrevious()) {
+      this.page = this.page.previous()
+      this.getPage()
+    }
+  },
+  getPage: function () {
+    var request = {
+      'values': this.query.values,
+      'sort': this.sorting.toJSONRequest(),
+      'limit': this.page.getSize(),
+      'offset': this.page.getOffset()
+    }
+
+    if(this.query.query !== null && (typeof this.query.query !== "undefined") && this.query.query !== "") {
+      request['query'] = this.query.query
+    }
+
+    axios.post('/drops/widgets/users', request)
+    .then(response => {
+      switch (response.status) {
+        case 200:
+        this.users = response.data.additional_information
+        break
+      }
+    }).catch(error => {
+      if (!axios.isCancel(error)) {
+        this.errorState = error.response.status
+      }
+    })
+  },
+  getCount: function() {
+    var request = {
+      'values': this.query.values
+    }
+    if(this.query.query !== null && (typeof this.query.query !== "undefined") && this.query.query !== "") {
+      request['query'] = this.query.query
+    }
+    axios.post('/drops/widgets/users/count', request)
+    .then(response => {
+      switch (response.status) {
+        case 200:
+        this.page = Page.apply(response.data.additional_information.count, this.config.getPage().sliding, this.config.getPage().size)
+        break
+      }
+    }).catch(error => {
+      this.errorState = error.response.status
+    })
+  },
+  setType: function (event) {
+    this.type = event
+    this.sorting.setType(this.type)
+  },
+  setSortingDir: function (event) {
+    this.sorting.setDir(event)
+    this.getPage()
+  },
+  setSortingField: function (event) {
+    this.sorting.setField(event)
+    this.getPage()
+  },
+  setQuery: function(event) {
+    if(event.state === "success") {
+      this.query = event
+      this.getCount()
+      this.getPage()
+    }
+  },
+  hasError () {
+    return this.errorState !== null && (typeof this.errorState !== 'undefined')
+  },
+  open(title, message, type) {
+    Notification({
+      title:  title,
+      message: message,
+      type: type
+    });
   }
+}
+}
 </script>
 
 <style scoped lang="less">
@@ -233,21 +245,21 @@
   }
 
   .vca-button-selections {
-	margin-top: 0.5em;
-  }
+   margin-top: 0.5em;
+ }
 
-  .vca-button-selection {
-	width: 200px;
-  }
+ .vca-button-selection {
+   width: 200px;
+ }
 
-  .vca-button-margin {
-    margin-right: 5px;
-  }
+ .vca-button-margin {
+  margin-right: 5px;
+}
 
-  .paginate {
-    height: 2.5em;
-    .inputElement();
-    cursor: pointer;
-    background: none;
-  }
+.paginate {
+  height: 2.5em;
+  .inputElement();
+  cursor: pointer;
+  background: none;
+}
 </style>
