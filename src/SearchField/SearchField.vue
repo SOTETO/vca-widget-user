@@ -25,6 +25,10 @@
       "type": String,
       "default": null
     },
+     "triggerSearch": {
+      "type": Boolean,
+      "default": false
+    },
     "activeFlag": {
       "type": String,
       "default": null
@@ -33,17 +37,16 @@
   components: { UserInput, SearchTagSet },
   data () {
 
-
     var currentQuery = [];
     var currentPointer = 0;
 
     if (this.crewName !== null) {
-      currentQuery.push(new FilterQuery.applyByCrew(this.crewName));
+      currentQuery.push(FilterQuery.applyByCrew(this.crewName));
       currentPointer++;
     }
 
     if (this.activeFlag !== null) {
-      currentQuery.push(new FilterQuery.applyByActive(this.activeFlag));
+      currentQuery.push(FilterQuery.applyByActive(this.activeFlag));
       currentPointer++;
     }
 
@@ -53,19 +56,31 @@
     }
   },
   watch: {
-    crewName: function(value) {
-      if (value !== null) {
-        this.currentQueries.push(FilterQuery.applyByCrew(value));
-        this.pointer++;
-        this.issueRequest();
-      }
+    'crewName': {
+      handler: function(value) {
+        if (value !== null) {
+          this.currentQueries.push(FilterQuery.applyByCrew(value));
+          this.pointer++;
+          this.issueRequest();
+        }
+      },
+      deep: true
     },
-    activeFlag: function(value) {
-      if (value !== null) {
-        this.currentQueries.push(FilterQuery.applyByActive(value));
-        this.pointer++;
+    'triggerSearch': {
+      handler: function(value) {
         this.issueRequest();
-      }
+      },
+      deep: true
+    },
+    'activeFlag': {
+      handler: function(value) {
+        if (value !== null) {
+          this.currentQueries.push(FilterQuery.applyByActive(value));
+          this.pointer++;
+          this.issueRequest();
+        }
+      },
+      deep: true
     }
   },
   methods: {

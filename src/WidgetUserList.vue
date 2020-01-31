@@ -6,7 +6,7 @@
     <span v-else>{{ $vcaI18n.t('error.unknown') }}</span>
   </div>
   <div v-else class="user-widget-list">
-    <SearchField :activeFlag="activeFlag" :crewName="crewName" v-on:newQuery="setQuery" />
+    <SearchField :activeFlag="activeFlag" :triggerSearch="triggerSearch" :crewName="crewName" v-on:newQuery="setQuery" />
 
     <div class="vca-button-selections">
       <button v-if="config.hasActionButtons()" class="vca-button-margin vca-button-primary vca-button-selection" v-for="button in config.buttons" @click="emitClick(button.callback)">
@@ -73,7 +73,9 @@
         query: { 'query': '', 'values': {} },
         selectedUsers: [],
         errorState: null,
-        crewName: null
+        crewName: null,
+        triggerSearch: false,
+        cancelToken: null
       }
     },
     created () {
@@ -88,8 +90,7 @@
           if (!userRoles.includes('employee') && !userRoles.includes('admin')) {
             this.crewName = response.data.additional_information.profiles[0].supporter.crew.name;
           } else {
-            this.getCount()
-            this.getPage()
+            this.triggerSearch = true
           }
         }
       })
@@ -140,6 +141,7 @@
     }
   },
   getPage: function () {
+
     var request = {
       'values': this.query.values,
       'sort': this.sorting.toJSONRequest(),
@@ -151,7 +153,12 @@
       request['query'] = this.query.query
     }
 
-    axios.post('/drops/widgets/users', request)
+    if (this.cancelToken) {
+      this.cancelToken.cancel()
+    }
+    this.cancelToken = axios.CancelToken.source()
+
+    axios.post('/drops/widgets/users', request, { cancelToken: this.cancelToken.token })
     .then(response => {
       switch (response.status) {
         case 200:
@@ -160,7 +167,7 @@
       }
     }).catch(error => {
       if (!axios.isCancel(error)) {
-        this.errorState = error.response.status
+        this.handleError(error)
       }
     })
   },
@@ -179,7 +186,7 @@
         break
       }
     }).catch(error => {
-      this.errorState = error.response.status
+      this.handleError(error)
     })
   },
   setType: function (event) {
@@ -203,6 +210,11 @@
   },
   hasError () {
     return this.errorState !== null && (typeof this.errorState !== 'undefined')
+  },
+  handleError: function(error) {
+    if (error.response) {
+      this.errorState = error.response.status
+    }
   },
   open(title, message, type) {
     Notification({
