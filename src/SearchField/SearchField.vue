@@ -57,7 +57,6 @@
       if (value !== null) {
         this.currentQueries.push(FilterQuery.applyByCrew(value));
         this.pointer++;
-        console.log("crewName")
         this.issueRequest();
       }
     },
